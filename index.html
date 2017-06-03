@@ -7,21 +7,88 @@
 </head>
 <body>
 
-<h1>Hello!</h1>
+<div class="ui fixed inverted menu" id="top-bar">
+    <div class="title item">
+        <i class="large home icon"></i>
+        Tomasulo
+    </div>
+    <a class="item">Load Instructions</a>
+    <a class="item">Modify Memory</a>
+    <div class="right menu">
+        <a class="item">
+            <i class="clock icon"></i>
+            Timer++
+        </a>
+        <!--ToDo: dropdown menu, including reset, etc.-->
+        <div class="item">30</div>
+    </div>
+</div>
+<div class="hidden" id="top-bar-filler"></div>
+<div class="ui vertical segment">
+    <div class="ui stackable grid container">
+
+        <div class="row">
+            <div class="ten wide column">
+                <div class="ui container segment">
+
+                    <h1>Left Container</h1>
+
+                    <table class="ui center aligned celled structured table">
+                        <thead>
+                        <tr>
+                            <th colspan="4">Instructions</th>
+                            <th colspan="3">Executing Status</th>
+                        </tr>
+                        <tr>
+                            <th>Op</th>
+                            <th>Dst</th>
+                            <th>SrcJ</th>
+                            <th>SrcK</th>
+                            <th>Out</th>
+                            <th>Exe</th>
+                            <th>WB</th>
+                        </tr>
+                        </thead>
+                        <tbody id="instructions">
+                        </tbody>
+                    </table>
+
+
+                </div>
+                <div class="ui container segment">
+                    <h1>Left Container 2</h1>
+                </div>
+            </div>
+            <div class="six wide column">
+                <h1>Right Column</h1>
+            </div>
+        </div>
+
+
+    </div>
+</div>
 
 
 
 
 
-
-
-
-<script src="lib/jquery-3.2.1/jquery-3.2.1.min.js"></script>
-<script src="lib/semantic/dist/semantic.min.js"></script>
+<script type="text/javascript" src="lib/jquery-3.2.1/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="lib/semantic/dist/semantic.min.js"></script>
 <script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript" src="js/ui.js"></script>
 <script type="text/javascript">
     $(function () {
-        init();
+        $('#top-bar-filler').css('height', $('#top-bar').height());
+
+
+//        init();
+        let instructions = new Array(6);
+        for (let i = 0; i < 6; ++i) {
+            instructions[i] = new Instruction('L.D', 'F6', 34, 'R2');
+        }
+        refreshInstructions(instructions);
+
+//        $('#instructions')
 
     })
 </script>
