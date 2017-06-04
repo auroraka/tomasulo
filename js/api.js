@@ -21,6 +21,18 @@ function getInstructions() {
     }
     return instructions;
 }
+function getReservationStations() {
+    let rss = [];
+    for (var i in allRS) {
+        let rs = allRS[i];
+        if (rs.busy() && rs.command.location === "ReservationStation") {
+            rss.push(new ReservationStation(null, rs.name, rs.busy(), rs.command.name, null, null, null, null));
+        } else {
+            rss.push(new ReservationStation(null, rs.name, rs.busy(), "", null, null, null, null));
+        }
+    }
+    return rss;
+}
 
 function run_step_one(callback) {
     Info("one step");
@@ -60,12 +72,3 @@ function getMemValue(id) {
 }
 
 
-function refreshAllInstructions() {
-    let instructions = getInstructions();
-    console.log(instructions);
-    refreshInstructions(instructions);
-}
-
-function refreshAllRegisters() {
-    refreshRegisters(register_);
-}

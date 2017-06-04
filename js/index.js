@@ -24,15 +24,33 @@ class Instruction {
 }
 
 
-function ReservationStation(id) {
-    this.id = id;
-    this.Op = null;
-    this.Qj = 0;
-    this.Qk = 0;
-    this.Vj = null;
-    this.Vk = null;
-    this.Busy = false;
-    this.A = null;
+class ReservationStation {
+    constructor(Time, Name, Busy, Op, Vj, Vk, Qj, Qk) {
+        this.Time = Time;
+        this.Name = Name;
+        this.Busy = Busy;
+        this.id = null;
+        this.Op = Op;
+        this.Qj = Qj;
+        this.Qk = Qk;
+        this.Vj = Vj;
+        this.Vk = Vk;
+        this.A = null;
+    }
+
+    to_html_tbody() {
+        return ''
+            + '<tr>'
+            + '<td>' + this.Time + '</td>'
+            + '<td>' + this.Name + '</td>'
+            + '<td>' + this.Busy + '</td>'
+            + '<td>' + this.Op + '</td>'
+            + '<td>' + this.Vj + '</td>'
+            + '<td>' + this.Vk + '</td>'
+            + '<td>' + this.Qj + '</td>'
+            + '<td>' + this.Qk + '</td>'
+            + '</tr>';
+    }
 }
 
 

@@ -25,8 +25,10 @@ class Calculator_ {
             let rs = allRS[i];
             // console.log(rs);
             if ((this.typeName === rs.typeName) && (rs.ready)) {
-                rs.location = "Calculator_";
+                rs.command.location = "Calculator";
                 this.command = rs.command;
+                Message("LOAD COMMAND", this.command.toString());
+                break;
             }
         }
     }
@@ -37,9 +39,11 @@ class Calculator_ {
         }
         if (this.busy() && (this.command.timer > 0)) {
             this.command.timer = this.command.timer - 1;
+            Message("RUN COMMAND", this.command.toString());
         }
-        if (this.busy() && (this.timer <= 0)) {
+        if (this.busy() && (this.command.timer <= 0)) {
             this.command.calc();
+            Message("FIN COMMAND", this.command.toString());
             this.command = null;
         }
         if (!this.busy()) {
@@ -52,10 +56,6 @@ class AddCalculator extends Calculator_ {
     constructor() {
         super();
         this.typeName = "AddSub";
-    }
-
-    calc() {
-
     }
 }
 

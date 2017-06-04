@@ -19,8 +19,8 @@ class ReservationStation_ {
     }
 
     checkReady() {
-        console.log(this);
-        console.log(this.busy());
+        // console.log(this);
+        // console.log(this.busy());
         if ((this.busy()) && (!this.ready) && (this.command.location === "ReservationStation")) {
             let flag = true;
             for (let i in this.command.reads) {

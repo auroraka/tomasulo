@@ -7,7 +7,7 @@ const SubCommandNeedTime = 3;
 const MulCommandNeedTime = 10;
 const DivCommandNeedTime = 40;
 const LoadCommandNeedTime = 2;
-const SaveCommandNeedTime = 2;
+const StoreCommandNeedTime = 2;
 
 class Command_ {
     //type = Add/Div/Mul/Div/Load/Store
@@ -36,11 +36,15 @@ class AddCommand extends Command_ {
         this.typeName = "AddSub";
         this.name = "ADDD";
         this.initCallBack();
+        this.timer = AddCommandNeedTime;
     }
 
     calc() {
         this.write.val = this.reads[0].val + this.reads[1].val;
         this.write.ready = true;
+        console.log("call5");
+        Message("ADD", this.reads[0].val.toString() + " " + this.reads[1].val.toString() + " " + this.write.val.toString());
+        // Message("ADD[NAME]", objectId(this.reads[0]) + " " + objectId(this.reads[1]) + " " + objectId(this.write));
     }
 }
 class SubCommand extends Command_ {
@@ -49,9 +53,11 @@ class SubCommand extends Command_ {
         this.typeName = "AddSub";
         this.name = "SUBD";
         this.initCallBack();
+        this.timer = SubCommandNeedTime;
     }
 
     calc() {
+        console.log("call4");
         this.write.val = this.reads[0].val - this.reads[1].val;
         this.write.ready = true;
 
@@ -63,10 +69,12 @@ class MulCommand extends Command_ {
         this.typeName = "MulDiv";
         this.name = "MULD";
         this.initCallBack();
-
+        this.timer = MulCommandNeedTime;
     }
 
     calc() {
+        console.log("call2");
+
         this.write.val = this.reads[0].val * this.reads[1].val;
         this.write.ready = true;
     }
@@ -78,7 +86,7 @@ class DivCommand extends Command_ {
         this.typeName = "MulDiv";
         this.name = "DIVD";
         this.initCallBack();
-
+        this.timer = DivCommandNeedTime;
     }
 
     calc() {
@@ -94,10 +102,12 @@ class LoadCommand extends Command_ {
         this.typeName = "Load";
         this.name = "LD";
         this.initCallBack();
-
+        this.timer = LoadCommandNeedTime;
     }
 
     calc() {
+        console.log("call2");
+
         this.write.val = this.reads[0].val;
         this.write.ready = true;
     }
@@ -110,10 +120,12 @@ class StoreCommand extends Command_ {
         this.typeName = "Store";
         this.name = "ST";
         this.initCallBack();
-
+        this.timer = StoreCommandNeedTime;
     }
 
     calc() {
+        console.log("call1");
+
         this.write.val = this.reads[0].val;
         this.write.ready = true;
     }
