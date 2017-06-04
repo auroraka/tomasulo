@@ -12,17 +12,16 @@ class Instruction {
     to_html_tbody() {
         return ''
             + '<tr>'
-                + '<td>' + this.Op + '</td>'
-                + '<td>' + this.Dst + '</td>'
-                + '<td>' + this.SrcJ + '</td>'
-                + '<td>' + this.SrcK + '</td>'
-                + '<td>' + (this.Out ? '<i class="large green checkmark icon"></i>' : '') + '</td>'
-                + '<td>' + (this.Exe ? '<i class="large green checkmark icon"></i>' : '') + '</td>'
-                + '<td>' + (this.WB ? '<i class="large green checkmark icon"></i>' : '') + '</td>'
+            + '<td>' + this.Op + '</td>'
+            + '<td>' + this.Dst + '</td>'
+            + '<td>' + this.SrcJ + '</td>'
+            + '<td>' + this.SrcK + '</td>'
+            + '<td>' + (this.Out ? '<i class="large green checkmark icon"></i>' : '') + '</td>'
+            + '<td>' + (this.Exe ? '<i class="large green checkmark icon"></i>' : '') + '</td>'
+            + '<td>' + (this.WB ? '<i class="large green checkmark icon"></i>' : '') + '</td>'
             + '</tr>';
     }
 }
-
 
 
 function ReservationStation(id) {
@@ -37,15 +36,13 @@ function ReservationStation(id) {
 }
 
 
-
 function init() {
-    var RSNum = 11;
+    let RSNum = 11;
 
-    var RS = new Array(RSNum);
-    for (var i = 0; i < RSNum; ++i) {
+    let RS = new Array(RSNum);
+    for (let i = 0; i < RSNum; ++i) {
         RS[i] = new ReservationStation(i);
     }
-
 
 
     alert('Done!');

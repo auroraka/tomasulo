@@ -7,6 +7,29 @@
 </head>
 <body>
 
+
+<script type="text/javascript" src="lib/jquery-3.2.1/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="lib/semantic/dist/semantic.min.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript" src="js/ui.js"></script>
+<script type="text/javascript" src="js/backend/tool.js"></script>
+<script type="text/javascript" src="js/backend/value.js"></script>
+<script type="text/javascript" src="js/backend/commands.js"></script>
+<script type="text/javascript" src="js/backend/calculator.js"></script>
+<script type="text/javascript" src="js/backend/instruction_queue.js"></script>
+<script type="text/javascript" src="js/backend/reservation_station.js"></script>
+<script type="text/javascript" src="js/api.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+
+<script>
+    $(function () {
+        $('#top-bar-filler').css('height', $('#top-bar').height());
+
+        main();
+
+    })
+</script>
+
 <div class="ui fixed inverted menu" id="top-bar">
     <div class="title item">
         <i class="large home icon"></i>
@@ -57,41 +80,64 @@
                 </div>
                 <div class="ui container segment">
                     <h1>Left Container 2</h1>
+                    <table class="ui center aligned celled structured table">
+                        <thead>
+                        <tr>
+                            <th colspan="4">浮点寄存器</th>
+                        </tr>
+                        <tr>
+                            <th>F0</th>
+                            <th>F1</th>
+                            <th>F2</th>
+                            <th>F3</th>
+                            <th>F4</th>
+                            <th>F5</th>
+                            <th>F6</th>
+                            <th>F7</th>
+                            <th>F8</th>
+                            <th>F9</th>
+                            <th>F10</th>
+                        </tr>
+                        </thead>
+                        <tbody id="regs">
+                        </tbody>
+                    </table>
                 </div>
+
+                <div class="ui container segment">
+                    <h1>Left Container</h1>
+                    <table class="ui center aligned celled structured table">
+                        <thead>
+                        <tr>
+                            <th colspan="7">Reservation Stations</th>
+                        </tr>
+                        <tr>
+                            <th>Time</th>
+                            <th>Name</th>
+                            <th>Busy</th>
+                            <th>Op</th>
+                            <th>Vj</th>
+                            <th>Vk</th>
+                            <th>Qj</th>
+                            <th>Qk</th>
+                        </tr>
+                        </thead>
+                        <tbody id="rs">
+                        </tbody>
+                    </table>
+                </div>
+
+
             </div>
             <div class="six wide column">
                 <h1>Right Column</h1>
             </div>
         </div>
-
+        <button onclick="run_step_one(refreshAllInstructions);">One Step</button>
 
     </div>
 </div>
 
-
-
-
-
-<script type="text/javascript" src="lib/jquery-3.2.1/jquery-3.2.1.min.js"></script>
-<script type="text/javascript" src="lib/semantic/dist/semantic.min.js"></script>
-<script type="text/javascript" src="js/index.js"></script>
-<script type="text/javascript" src="js/ui.js"></script>
-<script type="text/javascript">
-    $(function () {
-        $('#top-bar-filler').css('height', $('#top-bar').height());
-
-
-//        init();
-        let instructions = new Array(6);
-        for (let i = 0; i < 6; ++i) {
-            instructions[i] = new Instruction('L.D', 'F6', 34, 'R2');
-        }
-        refreshInstructions(instructions);
-
-//        $('#instructions')
-
-    })
-</script>
 
 </body>
 </html>
