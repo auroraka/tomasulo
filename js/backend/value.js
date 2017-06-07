@@ -8,7 +8,6 @@ let VALUE_ID = 233;
 class Value_ {
     constructor(val = 0) {
         this.val = val;
-        this.ready = true;
         this.name = null;
         this.id = VALUE_ID;
         VALUE_ID += 1;
