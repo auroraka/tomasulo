@@ -8,45 +8,41 @@
 
 function run_step_one(callback) {
     Info("one step");
-    insQueue.tic();
-    for (let i in allCalc) {
-        allCalc[i].tic();
+
+    T = T ^ 1;
+
+    insQueue[T] = cloneObject(insQueue[T ^ 1])
+    allCalc[T] = cloneObject(allCalc[T ^ 1]);
+
+    insQueue[T].tic();
+    for (let i in allCalc[T]) {
+        allCalc[T][i].tic();
     }
-    // let flag = true;
-    // while (flag) {
-    //     flag = false;
-    //     for (let i in allRS) {
-    //         rs = allRS[i];
-    //         if (rs.checkReady()) {
-    //             flag = true;
-    //         }
-    //     }
-    // }
 
     if (hasValue(callback)) {
         callback();
     }
 }
 
-function run_steps(n) {
+function run_steps(n, callback) {
     for (var i = 0; i < n; i++) {
-        run_step_one();
+        run_step_one(callback);
     }
 
 }
 
 //add command(s) split with '\n'
 function addCommandText(text) {
-    insQueue.addCommandsText(text);
+    insQueue[T].addCommandsText(text);
 }
 
 
 // ---------- Instructions ----------
 function getInstructions() {
-    let instructions = new Array(insQueue.commands.length);
-    for (var i in insQueue.commands) {
+    let instructions = new Array(insQueue[T].commands.length);
+    for (var i in insQueue[T].commands) {
         // console.log(insQueue.commands);
-        let cmd = insQueue.commands[i];
+        let cmd = insQueue[T].commands[i];
         if (cmd.reads.length >= 2) {
             // console.log(cmd.write);
             instructions[i] = new Instruction(cmd.name, cmd.getWriteName(), cmd.reads[0].name, cmd.reads[1].name);
@@ -61,8 +57,8 @@ function getInstructions() {
 // ---------- ReservationStation -----------
 function getReservationStations() {
     let rss = [];
-    for (var i in allRS) {
-        let rs = allRS[i];
+    for (var i in allRS[T]) {
+        let rs = allRS[T][i];
         if (rs.busy() && rs.command.location === "ReservationStation") {
             rss.push(new ReservationStation(null, rs.name, rs.busy(), rs.command.name, rs.command.reads[0].name, rs.command.reads[1].name, rs.command.getWriteName()));
         } else {
@@ -103,8 +99,8 @@ function addMemValue(id, val) {
 // ----------------- calcs ----------------
 function getCalculators() {
     let cas = [];
-    for (var i in allCalc) {
-        let calc = allCalc[i];
+    for (var i in allCalc[T]) {
+        let calc = allCalc[T][i];
         if (calc.busy() && calc.command.location === "Calculator") {
             cas.push(new Calculator(calc.typeName, calc.command.toString(), calc.command.timer.toString()));
         } else {

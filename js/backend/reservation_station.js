@@ -72,4 +72,4 @@ let mulDivRS = newList(MulDivRSTotal, new MulDivReservationStation());
 let loadRS = newList(LoadRSTotal, new LoadReservationStation());
 let storeRS = newList(StoreRSTotal, new StoreReservationStation());
 
-let allRS = [].concat(addSubRS, mulDivRS, loadRS, storeRS);
+let allRS = makeMirror([].concat(addSubRS, mulDivRS, loadRS, storeRS));

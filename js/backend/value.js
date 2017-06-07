@@ -17,7 +17,9 @@ class Value_ {
 
 let NULL_VALUE = new Value_();
 NULL_VALUE.name = "null";
+
 let register_ = newList(RegisterTotal, new Value_());
 register_.name = "F";
+
 let addr_ = newList(AddrTotal, new Value_());
 addr_.name = "";

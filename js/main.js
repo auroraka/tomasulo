@@ -18,7 +18,7 @@ function main() {
         setRegisterValue(i, 10 + i);
     }
 
-    insQueue.addCommandsText(
+    insQueue[T].addCommandsText(
         'ADDD F1,F2,F3\n' +
         'SUBD F1,F2,F3\n');
 

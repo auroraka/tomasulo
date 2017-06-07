@@ -137,8 +137,8 @@ class InstructionQueue_ {
     tic() {
         if (this.commands.length > 0) {
             let command = this.commands[0];
-            for (var i in allRS) {
-                let rs = allRS[i];
+            for (var i in allRS[T ^ 1]) {
+                let rs = allRS[T ^ 1][i];
                 //move command to ReservationStation
                 if (this.canAddRS(rs, command)) {
                     this.addRS(rs, command);
@@ -154,4 +154,4 @@ class InstructionQueue_ {
     }
 }
 
-let insQueue = new InstructionQueue_();
+let insQueue = makeMirror(new InstructionQueue_());

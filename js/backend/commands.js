@@ -31,7 +31,7 @@ class Command_ {
         if (hasValue(this.write) && this.write.name !== "null") {
             return this.write.name;
         } else {
-            return this.write_obj.name  + this.write_id.toString();
+            return this.write_obj.name + this.write_id.toString();
         }
     }
 

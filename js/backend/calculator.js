@@ -14,8 +14,8 @@ class Calculator_ {
     }
 
     feedCommand() {
-        for (let i in allRS) {
-            let rs = allRS[i];
+        for (let i in allRS[T ^ 1]) {
+            let rs = allRS[T ^ 1][i];
             if ((this.typeName === rs.typeName) && (rs.isReady())) {
                 rs.command.location = "Calculator";
                 this.command = rs.command;
@@ -83,4 +83,4 @@ let addCalc = new AddCalculator();
 let mulDivCalc = new MulDivCalculator();
 let loadCalc = new LoadCalculator();
 let storeCalc = new StoreCalculator();
-let allCalc = [addCalc, mulDivCalc, loadCalc, storeCalc];
+let allCalc = makeMirror([addCalc, mulDivCalc, loadCalc, storeCalc]);
