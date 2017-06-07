@@ -1,6 +1,5 @@
 Views
 
-
 1. Instructions & Run State [ Ins.Num ]
 
     Ins.Id, Op, Dst, SrcJ, SrcK, Out, Exe, WB
@@ -22,7 +21,7 @@ Views
     '1', 'Load1', '6', 'yes', '1234'
 
 
-4. ST [ 3 ]  { fiis }
+4. SQ [ 3 ]  { fiis }
 
     Ins.Id, Name, LDST.Id, Busy, Addr, Qj, Vj
 
@@ -38,16 +37,16 @@ Views
 
 6. Adder [ 2 ]  { first in index small }
 
-    Ins.Id, Op, Dst, SrcJ, SrcK, Progress('5/10')
+    Ins.Id, Op, Dst, Vj, Vk, Progress('5/10')
 
-    '4', 'ADDD', 'F1', 'F2', 'F3', '1/2'
+    '4', 'ADDD', 'Add1', '1','2', '1/2'
 
 
-7. MulDiv  [ 1 ]
+7. Multiplier  [ 1 ]
 
-    Ins.Id, Op, Dst, SrcJ, SrcK, Progress
+    Ins.Id, Op, Dst, Vj, Vk, Progress
 
-    '5', 'DIVD', 'F1', 'F2', 'F3', '40/40'
+    '5', 'DIVD', 'Mult1','1','2' ,'40/40'
 
 
 8. LDer [ 1 ]
@@ -59,12 +58,12 @@ Views
 
 9. STer [ 1 ]
 
-    Ins.Id, Op, Addr, FP.Id('F0'), Progress
+    Ins.Id, Op, Addr, FP.Value('F0'), Progress
 
-    '7', 'SD', '4000', 'F10', '2/2'
+    '7', 'SD', '4000', '123', '2/2'
 
 
-10. CBD
+10. CDB
 
     RS.Name, Value
 
@@ -99,6 +98,6 @@ Functions
    Global Tic Value.      // CUR_TIC  = 35
 
 
-3. Modify FP(index=[0,10]).     GET/PUT  = '1.23' / True
-   Modify Mem(index=[0,4096)).  GET/PUT  = '4.56' / True
+3. Modify FP(index=[0,10]).     GET/SET  = '1.23' / True
+   Modify Mem(index=[0,4096)).  GET/SET  = '4.56' / True
 
