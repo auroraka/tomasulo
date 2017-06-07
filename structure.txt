@@ -1,0 +1,104 @@
+Views
+
+
+1. Instructions & Run State [ Ins.Num ]
+
+    Ins.Id, Op, Dst, SrcJ, SrcK, Out, Exe, WB
+    '1', 'LD', 'F6', '1234', '', True, True, False
+    '2', 'ADDD', 'F1', 'F2', 'F3', ...
+
+
+2. FP & Qi [ 11 ]
+
+    FP.ID, Value, Qi.String
+
+    'F0', '1.23', 'Add2'
+
+
+3. LQ [ 3 ]  { fiis }
+
+    Ins.Id, Name, LDST.Id, Busy, Addr
+
+    '1', 'Load1', '6', 'yes', '1234'
+
+
+4. ST [ 3 ]  { fiis }
+
+    Ins.Id, Name, LDST.Id, Busy, Addr, Qj, Vj
+
+    '2', 'Store3', '1', 'no', '4000', 'Mult1', ''
+
+
+5. RS [ 3+- 2*/ ]
+
+    Ins.Id, Name, Busy, Op, Qj, Qk, Vj, Vk
+
+    '3', 'Add3', 'yes', 'SUBD', '', '', '1.23', '4.56'
+
+
+6. Adder [ 2 ]  { first in index small }
+
+    Ins.Id, Op, Dst, SrcJ, SrcK, Progress('5/10')
+
+    '4', 'ADDD', 'F1', 'F2', 'F3', '1/2'
+
+
+7. MulDiv  [ 1 ]
+
+    Ins.Id, Op, Dst, SrcJ, SrcK, Progress
+
+    '5', 'DIVD', 'F1', 'F2', 'F3', '40/40'
+
+
+8. LDer [ 1 ]
+
+    Ins.Id, Op, Addr, Progress
+
+    '6', 'LD', '1234', '1/2'
+
+
+9. STer [ 1 ]
+
+    Ins.Id, Op, Addr, FP.Id('F0'), Progress
+
+    '7', 'SD', '4000', 'F10', '2/2'
+
+
+10. CBD
+
+    RS.Name, Value
+
+    'Mult2', '0.0'
+
+
+11. Timer
+
+
+
+===============================================================================
+
+
+
+Functions
+
+
+1. Load Instructions from File.
+   Load Instructions from String.
+   Clear Instructions.
+
+   if valid, return True.
+   else { errString: 'INSTRUCTION' }
+
+   check ADDR and FP.Id
+
+
+2. Timer Step n(>=1).
+   Timer to End.
+
+   Global Complete Flag.  // COMPLETE = True
+   Global Tic Value.      // CUR_TIC  = 35
+
+
+3. Modify FP(index=[0,10]).     GET/PUT  = '1.23' / True
+   Modify Mem(index=[0,4096)).  GET/PUT  = '4.56' / True
+
