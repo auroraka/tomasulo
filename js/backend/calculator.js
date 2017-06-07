@@ -5,12 +5,12 @@
 
 class Calculator_ {
     constructor() {
-        this.command = null;// has command means busy
+        this.rs = null;// has rs means busy
         this.typeName = "none";
     }
 
     busy() {
-        return hasValue(this.command);
+        return hasValue(this.rs);
     }
 
     feedCommand() {
@@ -18,8 +18,8 @@ class Calculator_ {
             let rs = allRS[T ^ 1][i];
             if ((this.typeName === rs.typeName) && (rs.isReady())) {
                 rs.command.location = "Calculator";
-                this.command = rs.command;
-                Message("LOAD COMMAND", this.command.toString());
+                this.rs = rs;
+                Message("LOAD COMMAND", this.rs.command.toString());
                 break;
             }
         }
@@ -27,12 +27,13 @@ class Calculator_ {
 
     // run one tic
     runCommand() {
-        if (this.command.timer > 0) {
-            this.command.timer -= 1;
+        if (this.rs.command.timer > 0) {
+            this.rs.command.timer -= 1;
         } else {
-            this.command.calc();
-            Message("FIN COMMAND", this.command.toString());
-            this.command = null;
+            this.rs.command.calc();
+            Message("FIN COMMAND", this.rs.command.toString());
+            this.rs.command = null;
+            this.rs = null;
             this.feedCommand();
         }
     }

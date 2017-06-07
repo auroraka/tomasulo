@@ -39,6 +39,10 @@ class Command_ {
         console.log("[ADD COMMAND] " + this.toString());
     }
 
+    calcFinishCallBack() {
+        CDB_broadcast(this.write);
+    }
+
 }
 class AddCommand extends Command_ {
     constructor(reads, write, write_obj, write_id) {
@@ -51,10 +55,7 @@ class AddCommand extends Command_ {
 
     calc() {
         this.write.val = this.reads[0].val + this.reads[1].val;
-        this.write.ready = true;
-        console.log("call5");
-        Message("ADD", this.reads[0].val.toString() + " " + this.reads[1].val.toString() + " " + this.write.val.toString());
-        // Message("ADD[NAME]", objectId(this.reads[0]) + " " + objectId(this.reads[1]) + " " + objectId(this.write));
+        this.calcFinishCallBack();
     }
 }
 class SubCommand extends Command_ {
@@ -67,10 +68,8 @@ class SubCommand extends Command_ {
     }
 
     calc() {
-        console.log("call4");
         this.write.val = this.reads[0].val - this.reads[1].val;
-        this.write.ready = true;
-
+        this.calcFinishCallBack();
     }
 }
 class MulCommand extends Command_ {
@@ -83,10 +82,8 @@ class MulCommand extends Command_ {
     }
 
     calc() {
-        console.log("call2");
-
         this.write.val = this.reads[0].val * this.reads[1].val;
-        this.write.ready = true;
+        this.calcFinishCallBack();
     }
 
 }
@@ -101,7 +98,7 @@ class DivCommand extends Command_ {
 
     calc() {
         this.write.val = this.reads[0].val / this.reads[1].val;
-        this.write.ready = true;
+        this.calcFinishCallBack();
     }
 
 }
@@ -119,7 +116,7 @@ class LoadCommand extends Command_ {
         console.log("call2");
 
         this.write.val = this.reads[0].val;
-        this.write.ready = true;
+        this.calcFinishCallBack();
     }
 
 }
@@ -137,7 +134,7 @@ class StoreCommand extends Command_ {
         console.log("call1");
 
         this.write.val = this.reads[0].val;
-        this.write.ready = true;
+        this.calcFinishCallBack();
     }
 
 }
