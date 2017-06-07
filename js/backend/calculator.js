@@ -2,12 +2,6 @@
  * Created by ytl on 2017/6/2.
  */
 
-const AddTime = 2;
-const SubTime = 2;
-const MulTime = 10;
-const DivTime = 40;
-const LoadTime = 2;
-const StoreTime = 2;
 
 class Calculator_ {
     constructor() {
@@ -20,11 +14,9 @@ class Calculator_ {
     }
 
     feedCommand() {
-        // console.log(allRS);
         for (let i in allRS) {
             let rs = allRS[i];
-            // console.log(rs);
-            if ((this.typeName === rs.typeName) && (rs.ready)) {
+            if ((this.typeName === rs.typeName) && (rs.isReady())) {
                 rs.command.location = "Calculator";
                 this.command = rs.command;
                 Message("LOAD COMMAND", this.command.toString());
@@ -33,21 +25,26 @@ class Calculator_ {
         }
     }
 
-    tic() {
-        if (!this.busy()) {
-            this.feedCommand();
-        }
-        if (this.busy() && (this.command.timer > 0)) {
-            this.command.timer = this.command.timer - 1;
-            Message("RUN COMMAND", this.command.toString());
-        }
-        if (this.busy() && (this.command.timer <= 0)) {
+    // run one tic
+    runCommand() {
+        if (this.command.timer > 0) {
+            this.command.timer -= 1;
+        } else {
             this.command.calc();
             Message("FIN COMMAND", this.command.toString());
             this.command = null;
+            this.feedCommand();
         }
+    }
+
+    tic() {
         if (!this.busy()) {
             this.feedCommand();
+            if (this.busy()) {
+                this.runCommand();
+            }
+        } else {
+            this.runCommand();
         }
     }
 }

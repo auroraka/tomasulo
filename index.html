@@ -50,40 +50,36 @@
 <div class="ui vertical segment">
     <div class="ui stackable grid container">
 
+        <button onclick="run_step_one(refreshAll);">Run One Step</button>
         <div class="row">
             <div class="ten wide column">
+
                 <div class="ui container segment">
-
                     <h1>Left Container</h1>
-
                     <table class="ui center aligned celled structured table">
                         <thead>
                         <tr>
-                            <th colspan="4">Instructions</th>
-                            <th colspan="3">Executing Status</th>
+                            <th colspan="8">Instructions</th>
                         </tr>
                         <tr>
                             <th>Op</th>
                             <th>Dst</th>
                             <th>SrcJ</th>
                             <th>SrcK</th>
-                            <th>Out</th>
-                            <th>Exe</th>
-                            <th>WB</th>
                         </tr>
                         </thead>
                         <tbody id="instructions">
                         </tbody>
                     </table>
-
-
                 </div>
+
+
                 <div class="ui container segment">
                     <h1>Left Container 2</h1>
                     <table class="ui center aligned celled structured table">
                         <thead>
                         <tr>
-                            <th colspan="4">浮点寄存器</th>
+                            <th colspan="12">浮点寄存器</th>
                         </tr>
                         <tr>
                             <th>F0</th>
@@ -105,7 +101,34 @@
                 </div>
 
 
+                <div class="ui container segment">
+                    <h1>Left Container 2</h1>
+                    <table class="ui center aligned celled structured table">
+                        <thead>
+                        <tr>
+                            <th colspan="12">内存 MEM</th>
+                        </tr>
+                        <tr>
+                            <th>0</th>
+                            <th>1</th>
+                            <th>2</th>
+                            <th>3</th>
+                            <th>4</th>
+                            <th>5</th>
+                            <th>6</th>
+                            <th>7</th>
+                            <th>8</th>
+                            <th>9</th>
+                            <th>10</th>
+                        </tr>
+                        </thead>
+                        <tbody id="mems">
+                        </tbody>
+                    </table>
+                </div>
             </div>
+
+
             <div class="six wide column">
                 <h1>Right Column</h1>
                 <table class="ui center aligned celled structured table">
@@ -118,19 +141,37 @@
                         <th>Name</th>
                         <th>Busy</th>
                         <th>Op</th>
-                        <th>Vj</th>
-                        <th>Vk</th>
-                        <th>Qj</th>
-                        <th>Qk</th>
+                        <th>Read1</th>
+                        <th>Read2</th>
+                        <th>Write</th>
                     </tr>
                     </thead>
                     <tbody id="rs">
                     </tbody>
                 </table>
 
+                <div class="ui container segment">
+                    <h1>Right Container</h1>
+                    <table class="ui center aligned celled structured table">
+                        <thead>
+                        <tr>
+                            <th colspan="8">Calculator</th>
+                        </tr>
+                        <tr>
+                            <th>Name</th>
+                            <th>Command</th>
+                            <th>Rest Time</th>
+                        </tr>
+                        </thead>
+                        <tbody id="calculator">
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
+
+
         </div>
-        <button onclick="run_step_one(refreshAll);">One Step</button>
 
     </div>
 </div>

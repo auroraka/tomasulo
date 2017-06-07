@@ -11,18 +11,28 @@ const StoreCommandNeedTime = 2;
 
 class Command_ {
     //type = Add/Div/Mul/Div/Load/Store
-    constructor(reads, write) {
+    constructor(reads, write, write_obj, write_id) {
         this.reads = reads;
-        this.write = write;
+        // this.write = write;
+        this.write = NULL_VALUE;
+        this.write_obj = write_obj;
+        this.write_id = write_id;
         this.typeName = "none";
         this.timer = 0;
         this.location = "InstructionQueue";
-        this.inputReady = false;
         this.name = "none";
     }
 
     toString() {
-        return this.name + " " + this.write.name + " " + getNames(this.reads);
+        return this.name + " " + this.getWriteName() + " " + getNames(this.reads);
+    }
+
+    getWriteName() {
+        if (hasValue(this.write) && this.write.name !== "null") {
+            return this.write.name;
+        } else {
+            return this.write_obj.name  + this.write_id.toString();
+        }
     }
 
     initCallBack() {
@@ -31,8 +41,8 @@ class Command_ {
 
 }
 class AddCommand extends Command_ {
-    constructor(reads, write) {
-        super(reads, write);
+    constructor(reads, write, write_obj, write_id) {
+        super(reads, write, write_obj, write_id);
         this.typeName = "AddSub";
         this.name = "ADDD";
         this.initCallBack();
@@ -48,8 +58,8 @@ class AddCommand extends Command_ {
     }
 }
 class SubCommand extends Command_ {
-    constructor(reads, write) {
-        super(reads, write);
+    constructor(reads, write, write_obj, write_id) {
+        super(reads, write, write_obj, write_id);
         this.typeName = "AddSub";
         this.name = "SUBD";
         this.initCallBack();
@@ -64,8 +74,8 @@ class SubCommand extends Command_ {
     }
 }
 class MulCommand extends Command_ {
-    constructor(reads, write) {
-        super(reads, write);
+    constructor(reads, write, write_obj, write_id) {
+        super(reads, write, write_obj, write_id);
         this.typeName = "MulDiv";
         this.name = "MULD";
         this.initCallBack();
@@ -81,8 +91,8 @@ class MulCommand extends Command_ {
 
 }
 class DivCommand extends Command_ {
-    constructor(reads, write) {
-        super(reads, write);
+    constructor(reads, write, write_obj, write_id) {
+        super(reads, write, write_obj, write_id);
         this.typeName = "MulDiv";
         this.name = "DIVD";
         this.initCallBack();
@@ -97,8 +107,8 @@ class DivCommand extends Command_ {
 }
 
 class LoadCommand extends Command_ {
-    constructor(reads, write) {
-        super(reads, write);
+    constructor(reads, write, write_obj, write_id) {
+        super(reads, write, write_obj, write_id);
         this.typeName = "Load";
         this.name = "LD";
         this.initCallBack();
@@ -115,8 +125,8 @@ class LoadCommand extends Command_ {
 }
 
 class StoreCommand extends Command_ {
-    constructor(reads, write) {
-        super(reads, write);
+    constructor(reads, write, write_obj, write_id) {
+        super(reads, write, write_obj, write_id);
         this.typeName = "Store";
         this.name = "ST";
         this.initCallBack();

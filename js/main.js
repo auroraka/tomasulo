@@ -4,9 +4,10 @@
 
 function refreshAll() {
     refreshInstructions(getInstructions());
-    refreshRegisters(register_);
+    refreshRegisters();
+    refreshMems();
     refreshRS(getReservationStations());
-
+    refreshCalculators(getCalculators());
 }
 
 function main() {

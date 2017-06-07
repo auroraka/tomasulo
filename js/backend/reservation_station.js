@@ -10,7 +10,7 @@ const StoreRSTotal = 3;
 class ReservationStation_ {
     constructor() {
         this.command = null;//has command means busy
-        this.ready = false;
+        // this.ready = false;
         this.typeName = "none";
     }
 
@@ -18,22 +18,17 @@ class ReservationStation_ {
         return hasValue(this.command);
     }
 
-    checkReady() {
+    isReady() {
         // console.log(this);
         // console.log(this.busy());
-        if ((this.busy()) && (!this.ready) && (this.command.location === "ReservationStation")) {
-            let flag = true;
+        if ((this.busy()) && (this.command.location === "ReservationStation")) {
             for (let i in this.command.reads) {
                 let v = this.command.reads[i];
                 if (!v.ready) {
-                    flag = false;
-                    break;
+                    return false;
                 }
             }
-            if (flag) {
-                this.ready = true;
-                return true;
-            }
+            return true;
         }
         return false;
     }

@@ -12,16 +12,16 @@ function run_step_one(callback) {
     for (let i in allCalc) {
         allCalc[i].tic();
     }
-    let flag = true;
-    while (flag) {
-        flag = false;
-        for (let i in allRS) {
-            rs = allRS[i];
-            if (rs.checkReady()) {
-                flag = true;
-            }
-        }
-    }
+    // let flag = true;
+    // while (flag) {
+    //     flag = false;
+    //     for (let i in allRS) {
+    //         rs = allRS[i];
+    //         if (rs.checkReady()) {
+    //             flag = true;
+    //         }
+    //     }
+    // }
 
     if (hasValue(callback)) {
         callback();
@@ -41,7 +41,7 @@ function addCommandText(text) {
 }
 
 
-// ---------- Instruction ----------
+// ---------- Instructions ----------
 function getInstructions() {
     let instructions = new Array(insQueue.commands.length);
     for (var i in insQueue.commands) {
@@ -49,13 +49,14 @@ function getInstructions() {
         let cmd = insQueue.commands[i];
         if (cmd.reads.length >= 2) {
             // console.log(cmd.write);
-            instructions[i] = new Instruction(cmd.name, cmd.write.name, cmd.reads[0].name, cmd.reads[1].name);
+            instructions[i] = new Instruction(cmd.name, cmd.getWriteName(), cmd.reads[0].name, cmd.reads[1].name);
         } else {
-            instructions[i] = new Instruction(cmd.name, cmd.write.name, cmd.reads[0].name, "");
+            instructions[i] = new Instruction(cmd.name, cmd.getWriteName(), cmd.reads[0].name, "");
         }
     }
     return instructions;
 }
+
 
 // ---------- ReservationStation -----------
 function getReservationStations() {
@@ -63,14 +64,13 @@ function getReservationStations() {
     for (var i in allRS) {
         let rs = allRS[i];
         if (rs.busy() && rs.command.location === "ReservationStation") {
-            rss.push(new ReservationStation(null, rs.name, rs.busy(), rs.command.name, null, null, null, null));
+            rss.push(new ReservationStation(null, rs.name, rs.busy(), rs.command.name, rs.command.reads[0].name, rs.command.reads[1].name, rs.command.getWriteName()));
         } else {
             rss.push(new ReservationStation(null, rs.name, rs.busy(), "", null, null, null, null));
         }
     }
     return rss;
 }
-
 
 // -------------- registers -------------------
 
@@ -84,6 +84,8 @@ function getRegisterValue(id) {
 function addRegisterValue(id, val) {
     register_[id].val += val;
 }
+
+
 // ----------------- memory ---------------
 
 function setMemValue(id, val) {
@@ -97,3 +99,18 @@ function addMemValue(id, val) {
     addr_[id].val += val;
 }
 
+
+// ----------------- calcs ----------------
+function getCalculators() {
+    let cas = [];
+    for (var i in allCalc) {
+        let calc = allCalc[i];
+        if (calc.busy() && calc.command.location === "Calculator") {
+            cas.push(new Calculator(calc.typeName, calc.command.toString(), calc.command.timer.toString()));
+        } else {
+            cas.push(new Calculator(calc.typeName, null, null));
+        }
+    }
+    return cas;
+
+}

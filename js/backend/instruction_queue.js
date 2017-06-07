@@ -50,32 +50,32 @@ class InstructionQueue_ {
         switch (name) {
             case "ADDD":
                 if (this._get3param(params)) {
-                    return new AddCommand([register_[this.a], register_[this.b]], register_[this.c]);
+                    return new AddCommand([register_[this.a], register_[this.b]], register_[this.c], register_, this.c);
                 }
                 break;
             case "SUBD":
                 if (this._get3param(params)) {
-                    return new SubCommand([register_[this.a], register_[this.b]], register_[this.c]);
+                    return new SubCommand([register_[this.a], register_[this.b]], register_[this.c], register_, this.c);
                 }
                 break;
             case "MULD":
                 if (this._get3param(params)) {
-                    return new MulCommand([register_[this.a], register_[this.b]], register_[this.c]);
+                    return new MulCommand([register_[this.a], register_[this.b]], register_[this.c], register_, this.c);
                 }
                 break;
             case "DIVD":
                 if (this._get3param(params)) {
-                    return new DivCommand([register_[this.a], register_[this.b]], register_[this.c]);
+                    return new DivCommand([register_[this.a], register_[this.b]], register_[this.c], register_, this.c);
                 }
                 break;
             case "LD":
                 if (this._getaddrparam()) {
-                    return new LoadCommand([addr_[this.b], register_[this.a]]);
+                    return new LoadCommand([addr_[this.b], NULL_VALUE], register_[this.a], register_, this.a);
                 }
                 break;
             case "ST":
                 if (this._getaddrparam()) {
-                    return new StoreCommand([register_[this.a], addr_[this.b]]);
+                    return new StoreCommand([register_[this.a], NULL_VALUE], addr_[this.b], addr_, this.b);
                 }
                 break;
             default:
@@ -129,6 +129,9 @@ class InstructionQueue_ {
         rs.command = command;
         command.inputReady = false;
         command.location = "ReservationStation";
+        command.write = new Value_();
+        command.write.name = "#" + command.write.id.toString();
+        command.write_obj[command.write_id] = command.write;
     }
 
     tic() {
