@@ -19,12 +19,10 @@ class ReservationStation_ {
     }
 
     isReady() {
-        // console.log(this);
-        // console.log(this.busy());
         if ((this.busy()) && (this.command.location === "ReservationStation")) {
             for (let i in this.command.reads) {
                 let v = this.command.reads[i];
-                if (!v.ready) {
+                if (typeof(v) !== "number") {
                     return false;
                 }
             }

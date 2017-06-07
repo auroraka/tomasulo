@@ -130,8 +130,9 @@ class InstructionQueue_ {
         command.inputReady = false;
         command.location = "ReservationStation";
         command.write = new Value_();
-        command.write.name = "#" + command.write.id.toString();
-        command.write_obj[command.write_id] = command.write;
+        command.write.name = rs.name;
+        // command.write.name = "#" + command.write.id.toString();
+        command.write_obj[command.write_id].val = command.write;
     }
 
     tic() {
