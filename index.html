@@ -443,12 +443,25 @@
 
 <div class="ui modal" id="modify-memory-modal">
     <i class="close icon"></i>
-    <div class="header">Load One Instruction</div>
+    <div class="header">Modify one Memory</div>
     <div class="content container">
         <form class="ui form">
-
-
-
+            <div class="two fields">
+                <div class="field">
+                    <label>Address</label>
+                    <div class="ui left labeled left icon input">
+                        <i class="tag icon"></i>
+                        <input type="text" placeholder="Address in [0, 4096)" id="memory-addr">
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Value</label>
+                    <div class="ui left labeled left icon input">
+                        <i class="calculator icon"></i>
+                        <input type="text" placeholder="Value" id="memory-value">
+                    </div>
+                </div>
+            </div>
             <div class="ui divider"></div>
             <div class="ui teal button" id="apply-memory-button">Apply</div>
         </form>
@@ -576,7 +589,16 @@
     }
 
     function initMemory() {
-        const memoryModify = $('#modify-memory-button');
+        const memoryModifyButton = $('#modify-memory-button');
+        const memoryModifyModal = $('#modify-memory-modal');
+        const memoryModifyApply = $('#apply-memory-button');
+
+        memoryModifyButton.click(function () {
+            memoryModifyModal.modal('show');
+        });
+        memoryModifyApply.click(function () {
+            
+        });
 
 
     }
