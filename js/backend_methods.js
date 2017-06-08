@@ -122,12 +122,21 @@ function _checkGlobalComplete() {
     if (COMPLETE === true) {
         return true;
     }
-    if (false) {
-        COMPLETE = true;
-        return true;
-    } else {
+    if (instructions.length > 0) {
         return false;
     }
+    for (let i in rs) {
+        if (rs[i].Ins_Id !== null) {
+            return false;
+        }
+    }
+    for (let i in calc) {
+        if (calc[i].Ins_Id !== null) {
+            return false;
+        }
+    }
+    COMPLETE = true;
+    return true;
 }
 function _op2Type(op) {
     switch (op) {
@@ -212,19 +221,33 @@ function _sendInstructionToRS(inst, rss) {
     }
     outInstruction(inst.Ins_Id);
 }
+function _extraSendInstCheck(inst, rss) {
+    if (_op2Type(inst.Out) === "Add") {
+        return rss._id === 0;
+    }
+}
 function timerStepOne() {
     if (_checkGlobalComplete()) {
         console.log("finish");
         return false;
     }
     if (instructions.length > 0) {
-        let inst = instructions[0];
-        Info("[try send inst]", inst.toString());
-        for (let i in rs) {
-            if (_opSameAsType(inst.Op, rs[i].Type) && (!rs[i].Busy)) {
-                _sendInstructionToRS(inst, rs[i]);
-                instructions.shift();
+        let inst = null;
+        for (let i in instructions) {
+            if (instructions[i].Out === false) {
+                inst = instructions[i];
                 break;
+            }
+        }
+        if (inst) {
+            Info("[try send inst]", inst.toString());
+            for (let i in rs) {
+                if (_opSameAsType(inst.Op, rs[i].Type) && (!rs[i].Busy)) {
+                    if (_extraSendInstCheck(inst, rs[i])) {
+                        _sendInstructionToRS(inst, rs[i]);
+                        break;
+                    }
+                }
             }
         }
         for (let i in calc) {
@@ -243,7 +266,7 @@ function timerStepN(n = 1) {
 }
 
 function timerStepContinue() {
-    while (true) {
+    while (_checkGlobalComplete()) {
         if (!timerStepOne()) {
             return;
         }
@@ -273,7 +296,6 @@ function _getMemId(t) {
     } else {
         return t;
     }
-
 }
 
 // accsept format: '123',123

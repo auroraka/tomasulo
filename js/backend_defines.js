@@ -19,6 +19,7 @@ const CDB_BAND_WITH = INF;
 let _INST_ID = 1;
 
 class Instruction {
+
     constructor(Op, Dst, SrcJ, SrcK) {
         this.Ins_Id = _INST_ID++;
         this.Op = Op;
@@ -30,17 +31,28 @@ class Instruction {
         this.WB = false;
     }
 
+    _clean() {
+        this.Ins_Id = null;
+        this.Op = null;
+        this.Dst = null;
+        this.SrcJ = null;
+        this.SrcK = null;
+        this.Out = null;
+        this.Exe = null;
+        this.WB = null;
+    }
+
     to_html_tbody() {
         return ''
             + '<tr>'
-                + '<td>' + o(this.Ins_Id) + '</td>'
-                + '<td>' + o(this.Op) + '</td>'
-                + '<td>' + o(this.Dst) + '</td>'
-                + '<td>' + o(this.SrcJ) + '</td>'
-                + '<td>' + o(this.SrcK) + '</td>'
-                + '<td>' + (this.Out ? '<i class="large green checkmark icon"></i>' : '') + '</td>'
-                + '<td>' + (this.Exe ? '<i class="large green checkmark icon"></i>' : '') + '</td>'
-                + '<td>' + (this.WB ? '<i class="large green checkmark icon"></i>' : '') + '</td>'
+            + '<td>' + o(this.Ins_Id) + '</td>'
+            + '<td>' + o(this.Op) + '</td>'
+            + '<td>' + o(this.Dst) + '</td>'
+            + '<td>' + o(this.SrcJ) + '</td>'
+            + '<td>' + o(this.SrcK) + '</td>'
+            + '<td>' + (this.Out ? '<i class="large green checkmark icon"></i>' : '') + '</td>'
+            + '<td>' + (this.Exe ? '<i class="large green checkmark icon"></i>' : '') + '</td>'
+            + '<td>' + (this.WB ? '<i class="large green checkmark icon"></i>' : '') + '</td>'
             + '</tr>';
     }
 
@@ -56,14 +68,17 @@ class Instruction {
 let instructions = [];
 
 function delInstruction(Inst_Id) {
+    console.log("del inst " + Inst_Id.toString());
     for (let i in instructions) {
         if (instructions[i].Ins_Id === Inst_Id) {
             instructions.splice(i, 1);
+            console.log("delete inst " + Inst_Id.toString());
             break;
         }
     }
 }
 function outInstruction(Inst_Id) {
+    console.log("out inst " + Inst_Id.toString());
     for (let i in instructions) {
         if (instructions[i].Ins_Id === Inst_Id) {
             instructions[i].Out = true;
@@ -135,7 +150,15 @@ class ReservationStation {
     }
 
     _clean() {
-        this.constructor();
+        this.Ins_Id = null;
+        this.Op = null;
+        this.Qj = null;
+        this.Qk = null;
+        this.Vj = null;
+        this.Vk = null;
+        this.Busy = null;
+        this.Addr = null;
+        this.LDST_Id = null;
     }
 
 
@@ -150,12 +173,14 @@ class ReservationStation {
     }
 
     _finish() {
+        Info("finish rs " + this.Name);
         for (let i in calc) {
             if (calc[i].Ins_Id === this.Ins_Id) {
                 calc[i]._clean();
             }
         }
         delInstruction(this.Ins_Id);
+        this._clean();
     }
 
     ready() {
@@ -177,38 +202,38 @@ class ReservationStation {
     to_html_tbody() {
         return ''
             + '<tr>'
-                + '<td>' + o(this.Name) + '</td>'
-                + '<td>' + o(this.Busy) + '</td>'
-                + '<td>' + o(this.Ins_Id) + '</td>'
-                + '<td>' + o(this.Op) + '</td>'
-                + '<td>' + o(this.Qj) + '</td>'
-                + '<td>' + o(this.Qk) + '</td>'
-                + '<td>' + o(this.Vj) + '</td>'
-                + '<td>' + o(this.Vk) + '</td>'
+            + '<td>' + o(this.Name) + '</td>'
+            + '<td>' + o(this.Busy) + '</td>'
+            + '<td>' + o(this.Ins_Id) + '</td>'
+            + '<td>' + o(this.Op) + '</td>'
+            + '<td>' + o(this.Qj) + '</td>'
+            + '<td>' + o(this.Qk) + '</td>'
+            + '<td>' + o(this.Vj) + '</td>'
+            + '<td>' + o(this.Vk) + '</td>'
             + '</tr>';
     }
 
     to_html_tbody_lq() {
         return ''
             + '<tr>'
-                + '<td>' + o(this.Name) + '</td>'
-                + '<td>' + o(this.LDST_Id) + '</td>'
-                + '<td>' + o(this.Busy) + '</td>'
-                + '<td>' + o(this.Ins_Id) + '</td>'
-                + '<td>' + o(this.Addr) + '</td>'
+            + '<td>' + o(this.Name) + '</td>'
+            + '<td>' + o(this.LDST_Id) + '</td>'
+            + '<td>' + o(this.Busy) + '</td>'
+            + '<td>' + o(this.Ins_Id) + '</td>'
+            + '<td>' + o(this.Addr) + '</td>'
             + '</tr>';
     }
 
     to_html_tbody_sq() {
         return ''
             + '<tr>'
-                + '<td>' + o(this.Name) + '</td>'
-                + '<td>' + o(this.LDST_Id) + '</td>'
-                + '<td>' + o(this.Busy) + '</td>'
-                + '<td>' + o(this.Ins_Id) + '</td>'
-                + '<td>' + o(this.Qj) + '</td>'
-                + '<td>' + o(this.Vj) + '</td>'
-                + '<td>' + o(this.Addr) + '</td>'
+            + '<td>' + o(this.Name) + '</td>'
+            + '<td>' + o(this.LDST_Id) + '</td>'
+            + '<td>' + o(this.Busy) + '</td>'
+            + '<td>' + o(this.Ins_Id) + '</td>'
+            + '<td>' + o(this.Qj) + '</td>'
+            + '<td>' + o(this.Vj) + '</td>'
+            + '<td>' + o(this.Addr) + '</td>'
             + '</tr>';
     }
 }
@@ -244,10 +269,17 @@ class Adder {
     }
 
     _clean() {
-        this.constructor();
+        this.Ins_Id = null;
+        this.Op = null;
+        this.Dst = null;
+        this.Vj = null;
+        this.Vk = null;
+        this.Progress = null;
+        this._stall = null;
     }
 
     tic() {
+        Info("adder", "tic");
         if (adder[1]._stall) {
             return;
         }
@@ -259,7 +291,15 @@ class Adder {
                 this.Vj = adder[0].Vj;
                 this.Vk = adder[0].Vk;
                 this.Progress = "2/2";
-                cdb._receiveValue(this.Dst, this.Vj + this.Vk);
+                let result = null;
+                if (this.Op === "ADDD") {
+                    result = this.Vj + this.Vk;
+                } else if (this.Op === "SUBD") {
+                    result = this.Vj - this.Vk;
+
+                }
+
+                cdb._receiveValue(this.Dst, result);
                 wbInstruction(this.Ins_Id);
             }
         } else {
@@ -329,7 +369,14 @@ class Multiplier {
     }
 
     _clean() {
-        this.constructor();
+        this.Ins_Id = null;
+        this.Op = null;
+        this.Dst = null;
+        this.Vj = null;
+        this.Vk = null;
+        this.Progress = null;
+        this._result = null;
+        this._stall = false;
     }
 
     tic() {
@@ -399,7 +446,11 @@ class LDer {
     }
 
     _clean() {
-        this.constructor();
+        this.Ins_Id = null;
+        this.Op = null;
+        this.Addr = null;
+        this.Progress = null;
+        this._stall = null;
     }
 
     tic() {
@@ -447,11 +498,14 @@ class STer {
         this.Addr = null;
         this.FP_Value = null;
         this.Progress = null;
-        // this._stall = null;
     }
 
     _clean() {
-        this.constructor();
+        this.Ins_Id = null;
+        this.Op = null;
+        this.Addr = null;
+        this.FP_Value = null;
+        this.Progress = null;
     }
 
     tic() {
@@ -515,6 +569,7 @@ class CDB {
     }
 
     _writeResult(obj) {
+        Info("write result " + obj.name + " " + obj.val.toString());
         for (let i in fp) {
             if (hasValue(fp.Qi) && (fp[i].Qi === obj.name)) {
                 fp[i]._receiveResult(obj.name, obj.val);
@@ -526,7 +581,7 @@ class CDB {
             }
         }
         for (let i in rs) {
-            if (rs[i].name === name) {
+            if (rs[i].Name === obj.name) {
                 rs[i]._finish();
             }
         }
