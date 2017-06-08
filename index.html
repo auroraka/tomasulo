@@ -14,141 +14,286 @@
     <a class="item">Load Instructions</a>
     <a class="item">Modify Memory</a>
     <div class="right menu">
-        <a class="item">
+        <a class="ui dropdown item" id="timer-button">
             <i class="clock icon"></i>
-            Timer++
+            <span id="timer-span">Timer ++</span>
+            <div class="menu">
+                <div class="item" id="timer-1"><i class="clock icon"></i>Timer ++</div>
+                <div class="item" id="timer-5"><i class="clock icon"></i>Timer + 5</div>
+                <div class="item" id="timer-continue"><i class="clock icon"></i>Continue</div>
+            </div>
         </a>
-        <!--ToDo: dropdown menu, including reset, etc.-->
+
+
         <div class="item">30</div>
     </div>
 </div>
 <div class="hidden" id="top-bar-filler"></div>
+
 <div class="ui vertical segment">
     <div class="ui stackable grid container">
-
-        <button onclick="run_step_one(refreshAll);">Run One Step</button>
         <div class="row">
-            <div class="ten wide column">
+            <div class="ui segment container">
+                <h1 class="ui header">FP Registers</h1>
+                <table class="ui center aligned celled structured definition table">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>F0</th>
+                        <th>F1</th>
+                        <th>F2</th>
+                        <th>F3</th>
+                        <th>F4</th>
+                        <th>F5</th>
+                        <th>F6</th>
+                        <th>F7</th>
+                        <th>F8</th>
+                        <th>F9</th>
+                        <th>F10</th>
+                    </tr>
+                    </thead>
+                    <tbody id="fp-regs">
+                    <tr>
+                        <td>Value</td>
+                        <td>1.23</td>
+                        <td>1.23</td>
+                        <td>1.23</td>
+                        <td>1.23</td>
+                        <td>1.23</td>
+                        <td>1.23</td>
+                        <td>1.23</td>
+                        <td>1.23</td>
+                        <td>1.23</td>
+                        <td>1.23</td>
+                        <td>1.23</td>
+                    </tr>
+                    <tr>
+                        <td>Qi</td>
+                        <td>Add3</td>
+                        <td>Add3</td>
+                        <td>Add3</td>
+                        <td>Add3</td>
+                        <td>Add3</td>
+                        <td>Add3</td>
+                        <td>Add3</td>
+                        <td>Add3</td>
+                        <td>Add3</td>
+                        <td>Add3</td>
+                        <td>Add3</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-                <div class="ui container segment">
-                    <h1>Left Container</h1>
+
+        <div class="row">
+            <div class="nine wide column">
+                <div class="ui segment container">
+                    <h1 class="ui header">Instructions & Executing Statuses</h1>
                     <table class="ui center aligned celled structured table">
                         <thead>
                         <tr>
-                            <th colspan="8">Instructions</th>
+                            <th colspan="5">Instructions</th>
+                            <th colspan="3">Executing Status</th>
                         </tr>
                         <tr>
+                            <th>id</th>
                             <th>Op</th>
                             <th>Dst</th>
                             <th>SrcJ</th>
                             <th>SrcK</th>
+                            <th>Out</th>
+                            <th>Exe</th>
+                            <th>WB</th>
                         </tr>
                         </thead>
                         <tbody id="instructions">
+
+                        <tr>
+                            <td>1</td>
+                            <td>LD</td>
+                            <td>F6</td>
+                            <td>1234</td>
+                            <td></td>
+                            <td><i class="large green checkmark icon"></i></td>
+                            <td><i class="large green checkmark icon"></i></td>
+                            <td></td>
+                        </tr>
+
                         </tbody>
+
                     </table>
                 </div>
 
 
-                <div class="ui container segment">
-                    <h1>Left Container 2</h1>
+                <div class="ui segment container">
+                    <h1>Reservation Stations</h1>
                     <table class="ui center aligned celled structured table">
                         <thead>
                         <tr>
-                            <th colspan="12">浮点寄存器</th>
-                        </tr>
-                        <tr>
-                            <th>F0</th>
-                            <th>F1</th>
-                            <th>F2</th>
-                            <th>F3</th>
-                            <th>F4</th>
-                            <th>F5</th>
-                            <th>F6</th>
-                            <th>F7</th>
-                            <th>F8</th>
-                            <th>F9</th>
-                            <th>F10</th>
+                            <th>id</th>
+                            <th>Name</th>
+                            <th>Busy</th>
+                            <th>Op</th>
+                            <th>Qj</th>
+                            <th>Qk</th>
+                            <th>Vj</th>
+                            <th>Vk</th>
                         </tr>
                         </thead>
-                        <tbody id="regs">
+                        <tbody id="s">
                         </tbody>
                     </table>
                 </div>
 
 
-                <div class="ui container segment">
-                    <h1>Left Container 2</h1>
+                <div class="ui segment container">
+                    <h1>Calculators</h1>
                     <table class="ui center aligned celled structured table">
                         <thead>
-                        <tr>
-                            <th colspan="12">内存 MEM</th>
-                        </tr>
-                        <tr>
-                            <th>0</th>
-                            <th>1</th>
-                            <th>2</th>
-                            <th>3</th>
-                            <th>4</th>
-                            <th>5</th>
-                            <th>6</th>
-                            <th>7</th>
-                            <th>8</th>
-                            <th>9</th>
-                            <th>10</th>
-                        </tr>
-                        </thead>
-                        <tbody id="mems">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-
-            <div class="six wide column">
-                <h1>Right Column</h1>
-                <table class="ui center aligned celled structured table">
-                    <thead>
-                    <tr>
-                        <th colspan="7">Reservation Stations</th>
-                    </tr>
-                    <tr>
-                        <th>Time</th>
-                        <th>Name</th>
-                        <th>Busy</th>
-                        <th>Op</th>
-                        <th>Read1</th>
-                        <th>Read2</th>
-                        <th>Write</th>
-                    </tr>
-                    </thead>
-                    <tbody id="rs">
-                    </tbody>
-                </table>
-
-                <div class="ui container segment">
-                    <h1>Right Container</h1>
-                    <table class="ui center aligned celled structured table">
-                        <thead>
-                        <tr>
-                            <th colspan="8">Calculator</th>
-                        </tr>
                         <tr>
                             <th>Name</th>
-                            <th>Command</th>
-                            <th>Rest Time</th>
+                            <th>id</th>
+                            <th>Op</th>
+                            <th>Dst</th>
+                            <th>Vj</th>
+                            <th>Vk</th>
+                            <th>Progress</th>
                         </tr>
                         </thead>
                         <tbody id="calculator">
+
+                        <tr>
+                            <td>Add / SUB</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Add / SUB</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Mul / Div</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Load</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Store</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+
+
                         </tbody>
                     </table>
                 </div>
-
             </div>
 
+            <div class="seven wide column">
 
+                <div class="ui segment container">
+                    <h1>Load Queue</h1>
+                    <table class="ui center aligned celled structured table">
+                        <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>Name</th>
+                            <th>LS.id</th>
+                            <th>Busy</th>
+                            <th>Addr</th>
+                        </tr>
+                        </thead>
+                        <tbody id="load-queue">
+
+                        <tr>
+                            <td>1</td>
+                            <td>Load1</td>
+                            <td>6</td>
+                            <td>yes</td>
+                            <td>1234</td>
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+                </div>
+
+                <div class="ui segment container">
+                    <h1>Store Queue</h1>
+                    <table class="ui center aligned celled structured table">
+                        <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>Name</th>
+                            <th>LS.id</th>
+                            <th>Busy</th>
+                            <th>Qj</th>
+                            <th>Vj</th>
+                            <th>Addr</th>
+                        </tr>
+                        </thead>
+                        <tbody id="store-queue">
+
+                        <tr>
+                            <td>1</td>
+                            <td>Load1</td>
+                            <td>6</td>
+                            <td>yes</td>
+                            <td>Mult1</td>
+                            <td></td>
+                            <td>1234</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Load1</td>
+                            <td>6</td>
+                            <td>yes</td>
+                            <td>Mult1</td>
+                            <td></td>
+                            <td>1234</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Load1</td>
+                            <td>6</td>
+                            <td>yes</td>
+                            <td>Mult1</td>
+                            <td></td>
+                            <td>1234</td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-
     </div>
 </div>
 
@@ -169,7 +314,44 @@
 
         main();
 
-    })
+        initTimer();
+    });
+
+    function initTimer() {
+        let timerButton = $('#timer-button');
+        let timerSpan = $('#timer-span');
+        let timer1 = $('#timer-1');
+        const timer5 = $('#timer-5');
+        const timerContinue = $('#timer-continue');
+
+        timerButton.val(1).dropdown({
+            on: 'hover'
+        });
+        timer1.click(function () {
+            timerButton.val(1);
+            timerSpan.text(timer1.text());
+        });
+        timer5.click(function () {
+            timerButton.val(5);
+            timerSpan.text(timer5.text());
+        });
+        timerContinue.click(function () {
+            timerButton.val(0);
+            timerSpan.text(timerContinue.text());
+        });
+        timerButton.click(function () {
+            console.log(timerButton.val());
+            let step = timerButton.val();
+            if (COMPLETE || (step <= 0)) {
+                return;
+            }
+            if (timerButton.val() === 0) {
+//                ToDo: which API here?
+            } else {
+                timerStepN(step);
+            }
+        });
+    }
 </script>
 
 </body>
