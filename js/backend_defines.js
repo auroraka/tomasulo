@@ -13,6 +13,9 @@ const AdderTotal = 2;
 const MultiplierTotal = 1;
 const MultCalcTime = 10;
 const DivCalcTime = 40;
+const LoadCalcTime = 2;
+const StoreCalcTime = 2;
+const CDB_BAND_WITH = INF;
 let _INST_ID = 1;
 class Instructions {
     constructor(Op, Dst, SrcJ, SrcK) {
@@ -21,6 +24,9 @@ class Instructions {
         this.Dst = Dst;
         this.SrcJ = SrcJ;
         this.SrcK = SrcK;
+        this.Out = null;
+        this.Exe = null;
+        this.WB = null;
     }
 }
 
@@ -31,6 +37,12 @@ class FP {
         this.FP_ID = null;
         this.Value = null;
         this.Qi = null;
+    }
+
+    _receiveResult(name, val) {
+        if (this.Qi === name) {
+            this.Value = val;
+        }
     }
 }
 
@@ -55,6 +67,38 @@ class ReservationStation {
         this.Addr = Addr;
         this.LDST_Id = LDST_Id;
     }
+
+    _clean() {
+        this.constructor();
+    }
+
+
+    _receiveResult(name, val) {
+        if (this.Qj === name) {
+            this.Qj = null;
+            this.Vj = val;
+        } else if (this.Qk === name) {
+            this.Qk = null;
+            this.Vk = val;
+        }
+    }
+
+    _finish() {
+        for (let i in calc) {
+            if (calc[i].Ins_Id === this.Ins_Id) {
+                calc[i]._clean();
+            }
+        }
+
+    }
+
+    ready() {
+
+    }
+
+    can_LDST() {
+    }
+
 }
 
 let LQ = [];
@@ -87,6 +131,10 @@ class Adder {
         this._stall = null;
     }
 
+    _clean() {
+        this.constructor();
+    }
+
     tic() {
         if (adder[1]._stall) {
             return;
@@ -99,7 +147,7 @@ class Adder {
                 this.Vj = adder[0].Vj;
                 this.Vk = adder[0].Vk;
                 this.Progress = "2/2";
-                cdb.receiveValue(this.Dst, this.Vj + this.Vk);
+                cdb._receiveValue(this.Dst, this.Vj + this.Vk);
             }
         } else {
             for (let i in rs) {
@@ -127,10 +175,19 @@ function _getInstructionById(id) {
 }
 
 function _progressAdd(progress) {
-
+    ab = progress.split("/");
+    let a = parseInt(ab[0]);
+    let b = parseInt(ab[1]);
+    if (a < b) {
+        a += 1;
+    }
+    return a.toString() + "/" + b.toString();
 }
 function _progressFinish(progress) {
-
+    ab = progress.split("/");
+    let a = parseInt(ab[0]);
+    let b = parseInt(ab[1]);
+    return a >= b;
 }
 class Multiplier {
     constructor() {
@@ -144,6 +201,10 @@ class Multiplier {
         this._stall = false;
     }
 
+    _clean() {
+        this.constructor();
+    }
+
     tic() {
         if (this._stall) {
             return;
@@ -151,7 +212,7 @@ class Multiplier {
         if (hasValue(this.Ins_Id)) {
             this.Progress = _addProgress(this.Progress);
             if (_progressFinish(this.Progress)) {
-                cdb.receiveValue(this.Dst, this._result);
+                cdb._receiveValue(this.Dst, this._result);
                 this._stall = true;
             }
         } else {
@@ -188,10 +249,33 @@ class LDer {
         this.Op = null;
         this.Addr = null;
         this.Progress = null;
+        this._stall = null;
+    }
+
+    _clean() {
+        this.constructor();
     }
 
     tic() {
-        console.log("not finish");
+        if (this._stall) {
+            return;
+        }
+        if (hasValue(this.Ins_Id)) {
+            _progressAdd(this.Progress);
+            if (_progressFinish(this.Progress)) {
+                cdb._receiveValue(this.Dst, getMem(this.Addr));
+                this._stall = true;
+            }
+        } else {
+            for (let i in rs) {
+                if ((rs[i].Type === "Load") && (rs[i].ready()) && (rs[i].canLDST())) {
+                    this.Ins_Id = rs[i].Ins_Id;
+                    this.Op = rs[i].Op;
+                    this.Addr = rs[i].Addr;
+                    this.Progress = "1/" + LoadCalcTime.toString();
+                }
+            }
+        }
     }
 }
 
@@ -204,10 +288,40 @@ class STer {
         this.Addr = null;
         this.FP_Value = null;
         this.Progress = null;
+        // this._stall = null;
+    }
+
+    _clean() {
+        this.constructor();
     }
 
     tic() {
-        console.log("not finish");
+        // if (this._stall) {
+        //     return;
+        // }
+        if (hasValue(this.Ins_Id)) {
+            _progressAdd(this.Progress);
+            if (_progressFinish(this.Progress)) {
+                setMem(this.Addr, this.FP_Value);
+                for (let i in SQ) {
+                    if (SQ[i].Ins_Id === this.Ins_Id) {
+                        SQ[i]._finish();
+                    }
+                }
+                // cdb.receiveValue(this.Addr, this.FP_Value);
+                // this._stall = true;
+            }
+        } else {
+            for (let i in rs) {
+                if ((rs[i].Type === "Store") && (rs[i].ready()) && (rs[i].canLDST())) {
+                    this.Ins_Id = rs[i].Ins_Id;
+                    this.Op = rs[i].Op;
+                    this.Addr = rs[i].Addr;
+                    this.FP_Value = getFP(rs[i].SrcJ);
+                    this.Progress = "1/" + StoreCalcTime.toString();
+                }
+            }
+        }
     }
 }
 
@@ -220,14 +334,42 @@ class CDB {
     constructor() {
         this.RS_Name = null;
         this.Value = null;
+        this._signalQueue = [];
     }
 
-    receiveValue() {
-        console.log("not finish");
+    _receiveValue(name, val) {
+        let obj = Object();
+        obj.name = name.toString();
+        obj.val = val;
+        this._signalQueue.push(obj);
+    }
+
+    _writeResult(obj) {
+        for (let i in fp) {
+            if (hasValue(fp.Qi) && (fp[i].Qi === obj.name)) {
+                fp[i]._receiveResult(obj.name, obj.val);
+            }
+        }
+        for (let i in rs) {
+            if (hasValue(rs[i].Qj) && (rs[i].Qj === obj.name)) {
+                rs[i]._receiveResult(obj.name, obj.val);
+            }
+        }
+        for (let i in rs) {
+            if (rs[i].name === name) {
+                rs[i]._finish();
+            }
+        }
     }
 
     tic() {
-        console.log("not finish");
+        for (let i = 0; i < CDB_BAND_WITH; i++) {
+            if (this._signalQueue <= 0) {
+                break;
+            }
+            this._writeResult(this._signalQueue[0]);
+            this._signalQueue.shift();
+        }
     }
 }
 

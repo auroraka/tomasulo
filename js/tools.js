@@ -6,6 +6,14 @@ function hasValue(data) {
     return (data !== undefined) && (data !== null) && (data !== "");
 }
 
+function newList(count, data) {
+    let x = [];
+    for (let i = 0; i < count; i++) {
+        // x.push(data);
+        x.push(Object.create(data))
+    }
+    return x;
+}
 
 function assert(result) {
     if (result !== true) {
