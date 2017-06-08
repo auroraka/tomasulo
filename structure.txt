@@ -92,7 +92,7 @@ Functions
 
 
 2. Timer Step n(>=1).
-   Timer to End.
+   Timer Step Continue.
 
    Global Complete Flag.  // COMPLETE = True
    Global Tic Value.      // CUR_TIC  = 35

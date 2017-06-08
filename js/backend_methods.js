@@ -209,7 +209,7 @@ function _sendInstructionToRS(inst, rss) {
 }
 function timerStepOne() {
     if (_checkGlobalComplete()) {
-        return;
+        return false;
     }
     if (instructions.length > 0) {
         let inst = instructions[0];
@@ -226,6 +226,7 @@ function timerStepOne() {
         cdb.tic();
     }
     CUR_TIC += 1;
+    return true;
 }
 
 function timerStepN(n = 1) {
@@ -234,6 +235,13 @@ function timerStepN(n = 1) {
     }
 }
 
+function timerStepContinue() {
+    while (true) {
+        if (!timerStepOne()) {
+            return;
+        }
+    }
+}
 // accept format: 'F0',0
 function getFP(id) {
     return FP[_getFPId(id)];
