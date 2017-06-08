@@ -13,3 +13,7 @@ tr.seven-split th {
 tr.eight-split th {
     width: 12.5%;
 }
+
+tr.twelve-split th {
+    width: 8%;
+}

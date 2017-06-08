@@ -76,5 +76,9 @@ function refreshInstructions(ins_tbody) {
 }
 
 function refreshMemories(mem_tbody) {
-
+    let mem = '';
+    for (let i in memory_watch_list) {
+        mem += '<tr><td>' + memory_watch_list[i] + '</td><td>' + getMem(memory_watch_list[i]) + '</td></tr>';
+    }
+    mem_tbody.html(mem);
 }

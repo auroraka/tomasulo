@@ -37,8 +37,8 @@
                     <h1 class="ui header">FP Registers</h1>
                     <table class="ui center aligned celled structured definition table">
                         <thead>
-                        <tr>
-                            <th></th>
+                        <tr class="twelve-split">
+                            <th style="width: 12%;"></th>
                             <th>F0</th>
                             <th>F1</th>
                             <th>F2</th>
@@ -80,7 +80,7 @@
                         <tr class="eight-split">
                             <th></th>
                             <th>Busy</th>
-                            <th>id</th>
+                            <th>Ins.id</th>
                             <th>Op</th>
                             <th>Qj</th>
                             <th>Qk</th>
@@ -99,7 +99,7 @@
                         <thead>
                         <tr>
                             <th style="width: 22%;"></th>
-                            <th style="width: 13%;">id</th>
+                            <th style="width: 13%;">Ins.id</th>
                             <th style="width: 13%;">Op</th>
                             <th style="width: 13%;">Dst</th>
                             <th style="width: 13%;">Vj</th>
@@ -119,10 +119,10 @@
                     <table class="ui center aligned celled structured table">
                         <thead>
                         <tr class="five-split">
-                            <th>id</th>
                             <th>Name</th>
                             <th>LS.id</th>
                             <th>Busy</th>
+                            <th>Ins.id</th>
                             <th>Addr</th>
                         </tr>
                         </thead>
@@ -136,10 +136,10 @@
                     <table class="ui center aligned celled structured table">
                         <thead>
                         <tr class="seven-split">
-                            <th style="width: 12%">id</th>
                             <th>Name</th>
-                            <th>LS.id</th>
+                            <th style="width: 12%;">LS.id</th>
                             <th>Busy</th>
+                            <th>Ins.id</th>
                             <th>Qj</th>
                             <th>Vj</th>
                             <th>Addr</th>
@@ -167,7 +167,7 @@
                             <th colspan="3">Executing Status</th>
                         </tr>
                         <tr class="eight-split">
-                            <th>id</th>
+                            <th>Ins.id</th>
                             <th>Op</th>
                             <th>Dst</th>
                             <th>SrcJ</th>
@@ -195,14 +195,7 @@
                             <th>Value</th>
                         </tr>
                         </thead>
-                        <tbody id="memory">
-
-                        <tr>
-                            <td>1234</td>
-                            <td>5.67</td>
-                        </tr>
-
-                        </tbody>
+                        <tbody id="memory"></tbody>
                     </table>
                 </div>
             </div>
@@ -261,6 +254,18 @@
     </div>
 </div>
 
+<div class="ui modal" id="watch-memory-modal">
+    <i class="close icon"></i>
+    <div class="header">Watch one Memory</div>
+    <div class="content container">
+        <form class="ui form">
+            <input placeholder="Address in [0, 4096)" id="watch-memory-addr">
+            <div class="ui divider"></div>
+            <div class="ui teal button" id="apply-watch-memory-button">Apply</div>
+        </form>
+    </div>
+</div>
+
 <script type="text/javascript" src="lib/jquery-3.2.1/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="lib/semantic/dist/semantic.min.js"></script>
 <script type="text/javascript" src="js/tools.js"></script>
@@ -284,7 +289,6 @@
 
     function refreshUI() {
         refreshTimerTic($('#timer-tic'));
-
         refreshFPRegisters($('#fp-registers'));
         refreshCDB($('#cdb'));
         refreshReservationStations($('#reservation-stations'));
@@ -292,8 +296,7 @@
         refreshLoadQueue($('#load-queue'));
         refreshStoreQueue($('#store-queue'));
         refreshInstructions($('#instructions'));
-
-        // ToDo: refresh timer
+        refreshMemories($('#memory'));
     }
 
 
@@ -360,8 +363,8 @@
             if (result !== true) {
                 alert(result);
             } else {
-                insLoadModal.modal('hide');
                 refreshUI();
+                insLoadModal.modal('hide');
             }
         });
         insAppendOne.click(function () {
@@ -372,8 +375,8 @@
             if (result !== true) {
                 alert(result);
             } else {
-                insLoadModal.modal('hide');
                 refreshUI();
+                insLoadOneModal.modal('hide');
             }
         });
         insClear.click(function () {
@@ -387,14 +390,50 @@
         const memoryModifyModal = $('#modify-memory-modal');
         const memoryModifyApply = $('#apply-memory-button');
 
+        const memoryWatchModal = $('#watch-memory-modal');
+        const memoryWatchButton = $('#memory-watch');
+        const memoryWatchClear = $('#memory-clear');
+        const memoryWatchApply = $('#apply-watch-memory-button');
+
         memoryModifyButton.click(function () {
             memoryModifyModal.modal('show');
         });
         memoryModifyApply.click(function () {
+            const addr = parseInt($('#memory-addr').val());
+            const value = parseFloat($('#memory-value').val());
 
+            // ToDo: check addr is number...?
+
+            if ((0 <= addr) && (addr < MemTotal)) {
+                setMem(addr, value);
+                alert('Memory Value Saved!');
+            } else {
+                alert('Invalid Params!');
+            }
+            memoryModifyModal.modal('hide');
         });
+        memoryWatchButton.click(function () {
+            memoryWatchModal.modal('show');
+        });
+        memoryWatchApply.click(function () {
+            const addr = parseInt($('#watch-memory-addr').val());
 
+            // ToDo: check addr is number...?
 
+            // ToDo: below if add condition: && addr not in watch list.
+
+            if ((0 <= addr) && (addr < MemTotal)) {
+                addOneAddrToMemWatchList(addr);
+                refreshUI();
+            } else {
+                alert('Invalid Params!');
+            }
+            memoryWatchModal.modal('hide');
+        });
+        memoryWatchClear.click(function () {
+            clearMemWatchList();
+            refreshUI();
+        });
     }
 
 

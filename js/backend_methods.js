@@ -114,6 +114,7 @@ function loadInstructionsFromFile(file_name) {
 
 function clearInstructions() {
     instructions = [];
+    _INST_ID = 1;
     return true;
 }
 
@@ -267,7 +268,7 @@ function setFP(id, x) {
 }
 
 function _getMemId(t) {
-    if (typeof(t) === "sting") {
+    if (typeof(t) === "string") {
         return parseInt(t);
     } else {
         return t;

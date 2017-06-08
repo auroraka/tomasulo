@@ -35,9 +35,9 @@ class Instruction {
             + '<tr>'
                 + '<td>' + o(this.Ins_Id) + '</td>'
                 + '<td>' + o(this.Op) + '</td>'
-                + '<td>' + this.Dst + '</td>'
-                + '<td>' + this.SrcJ + '</td>'
-                + '<td>' + this.SrcK + '</td>'
+                + '<td>' + o(this.Dst) + '</td>'
+                + '<td>' + o(this.SrcJ) + '</td>'
+                + '<td>' + o(this.SrcK) + '</td>'
                 + '<td>' + (this.Out ? '<i class="large green checkmark icon"></i>' : '') + '</td>'
                 + '<td>' + (this.Exe ? '<i class="large green checkmark icon"></i>' : '') + '</td>'
                 + '<td>' + (this.WB ? '<i class="large green checkmark icon"></i>' : '') + '</td>'
@@ -45,7 +45,6 @@ class Instruction {
     }
 
     toString() {
-
         let x = this.Ins_Id.toString() + " " + this.Op.toString() + " " + this.Dst.toString() + " " + this.SrcJ.toString() + " ";
         if (this.SrcK) {
             x += this.SrcK.toString();
@@ -93,7 +92,7 @@ function wbInstruction(Inst_Id) {
 class FP {
     constructor() {
         this.FP_ID = null;
-        this.Value = null;
+        this.Value = 0.0;
         this.Qi = null;
     }
 
@@ -104,11 +103,11 @@ class FP {
     }
 
     to_html_tbody_value() {
-        return '<td>' + this.Value + '</td>';
+        return '<td>' + o(this.Value) + '</td>';
     }
 
     to_html_tbody_qi() {
-        return '<td>' + this.Qi + '</td>';
+        return '<td>' + o(this.Qi) + '</td>';
     }
 }
 
@@ -178,38 +177,38 @@ class ReservationStation {
     to_html_tbody() {
         return ''
             + '<tr>'
-            + '<td>' + this.Name + '</td>'
-            + '<td>' + this.Busy + '</td>'
-            + '<td>' + this.Ins_Id + '</td>'
-            + '<td>' + this.Op + '</td>'
-            + '<td>' + this.Qj + '</td>'
-            + '<td>' + this.Qk + '</td>'
-            + '<td>' + this.Vj + '</td>'
-            + '<td>' + this.Vk + '</td>'
+                + '<td>' + o(this.Name) + '</td>'
+                + '<td>' + o(this.Busy) + '</td>'
+                + '<td>' + o(this.Ins_Id) + '</td>'
+                + '<td>' + o(this.Op) + '</td>'
+                + '<td>' + o(this.Qj) + '</td>'
+                + '<td>' + o(this.Qk) + '</td>'
+                + '<td>' + o(this.Vj) + '</td>'
+                + '<td>' + o(this.Vk) + '</td>'
             + '</tr>';
     }
 
     to_html_tbody_lq() {
         return ''
             + '<tr>'
-            + '<td>' + this.Ins_Id + '</td>'
-            + '<td>' + this.Name + '</td>'
-            + '<td>' + this.LDST_Id + '</td>'
-            + '<td>' + this.Busy + '</td>'
-            + '<td>' + this.Addr + '</td>'
+                + '<td>' + o(this.Name) + '</td>'
+                + '<td>' + o(this.LDST_Id) + '</td>'
+                + '<td>' + o(this.Busy) + '</td>'
+                + '<td>' + o(this.Ins_Id) + '</td>'
+                + '<td>' + o(this.Addr) + '</td>'
             + '</tr>';
     }
 
     to_html_tbody_sq() {
         return ''
             + '<tr>'
-            + '<td>' + this.Ins_Id + '</td>'
-            + '<td>' + this.Name + '</td>'
-            + '<td>' + this.LDST_Id + '</td>'
-            + '<td>' + this.Busy + '</td>'
-            + '<td>' + this.Qj + '</td>'
-            + '<td>' + this.Vj + '</td>'
-            + '<td>' + this.Addr + '</td>'
+                + '<td>' + o(this.Name) + '</td>'
+                + '<td>' + o(this.LDST_Id) + '</td>'
+                + '<td>' + o(this.Busy) + '</td>'
+                + '<td>' + o(this.Ins_Id) + '</td>'
+                + '<td>' + o(this.Qj) + '</td>'
+                + '<td>' + o(this.Vj) + '</td>'
+                + '<td>' + o(this.Addr) + '</td>'
             + '</tr>';
     }
 }
@@ -280,12 +279,12 @@ class Adder {
 
     to_html_tbody_tds() {
         return ''
-            + '<td>' + this.Ins_Id + '</td>'
-            + '<td>' + this.Op + '</td>'
-            + '<td>' + this.Dst + '</td>'
-            + '<td>' + this.Vj + '</td>'
-            + '<td>' + this.Vk + '</td>'
-            + '<td>' + this.Progress + '</td>';
+            + '<td>' + o(this.Ins_Id) + '</td>'
+            + '<td>' + o(this.Op) + '</td>'
+            + '<td>' + o(this.Dst) + '</td>'
+            + '<td>' + o(this.Vj) + '</td>'
+            + '<td>' + o(this.Vk) + '</td>'
+            + '<td>' + o(this.Progress) + '</td>';
     }
 }
 assert(AdderTotal == 2);
@@ -370,12 +369,12 @@ class Multiplier {
 
     to_html_tbody_tds() {
         return ''
-            + '<td>' + this.Ins_Id + '</td>'
-            + '<td>' + this.Op + '</td>'
-            + '<td>' + this.Dst + '</td>'
-            + '<td>' + this.Vj + '</td>'
-            + '<td>' + this.Vk + '</td>'
-            + '<td>' + this.Progress + '</td>';
+            + '<td>' + o(this.Ins_Id) + '</td>'
+            + '<td>' + o(this.Op) + '</td>'
+            + '<td>' + o(this.Dst) + '</td>'
+            + '<td>' + o(this.Vj) + '</td>'
+            + '<td>' + o(this.Vk) + '</td>'
+            + '<td>' + o(this.Progress) + '</td>';
     }
 }
 
@@ -430,12 +429,12 @@ class LDer {
 
     to_html_tbody_tds() {
         return ''
-            + '<td>' + this.Ins_Id + '</td>'
-            + '<td>' + this.Op + '</td>'
-            + '<td>' + this.Addr + '</td>'
+            + '<td>' + o(this.Ins_Id) + '</td>'
+            + '<td>' + o(this.Op) + '</td>'
+            + '<td>' + o(this.Addr) + '</td>'
             + '<td></td>'
             + '<td></td>'
-            + '<td>' + this.Progress + '</td>';
+            + '<td>' + o(this.Progress) + '</td>';
     }
 }
 
@@ -487,12 +486,12 @@ class STer {
 
     to_html_tbody_tds() {
         return ''
-            + '<td>' + this.Ins_Id + '</td>'
-            + '<td>' + this.Op + '</td>'
-            + '<td>' + this.FP_Value + '</td>'
-            + '<td>' + this.Addr + '</td>'
+            + '<td>' + o(this.Ins_Id) + '</td>'
+            + '<td>' + o(this.Op) + '</td>'
+            + '<td>' + o(this.FP_Value) + '</td>'
+            + '<td>' + o(this.Addr) + '</td>'
             + '<td></td>'
-            + '<td>' + this.Progress + '</td>';
+            + '<td>' + o(this.Progress) + '</td>';
     }
 }
 
@@ -546,8 +545,8 @@ class CDB {
     to_html_tbody() {
         return ''
             + '<tr>'
-            + '<td>' + this.RS_Name + '</td>'
-            + '<td>' + this.Value + '</td>'
+            + '<td>' + o(this.RS_Name) + '</td>'
+            + '<td>' + o(this.Value) + '</td>'
             + '</tr>';
     }
 }
