@@ -1,3 +1,13 @@
+function refreshTimerTic(timer_tic) {
+    if (CUR_TIC === 0) {
+        timer_tic.html('Ready: 0');
+    } else if (COMPLETE === false) {
+        timer_tic.html('Running: ' + CUR_TIC);
+    } else {
+        timer_tic.html('Complete: ' + CUR_TIC);
+    }
+}
+
 function refreshFPRegisters(fp_reg_tbody) {
     let values = '<tr><td>Value</td>';
     let qis = '<tr><td>Qi</td>';
@@ -55,6 +65,11 @@ function refreshStoreQueue(sq_tbody) {
 function refreshInstructions(ins_tbody) {
     let ins = '';
     for (let i in instructions) {
+        console.log('refresh one ins');
+        console.log(instructions[i]);
+        console.log(instructions[i].to_html_tbody());
+
+
         ins += instructions[i].to_html_tbody();
     }
     ins_tbody.html(ins);

@@ -24,7 +24,7 @@
                 <div class="item" id="timer-continue"><i class="play icon"></i>Continue</div>
             </div>
         </a>
-        <div class="item" id="timer-tic">30</div>
+        <div class="item" id="timer-tic">Ready: 0</div>
     </div>
 </div>
 <div class="hidden" id="top-bar-filler"></div>
@@ -215,8 +215,7 @@
     <div class="header">Load Instructions</div>
     <div class="content container">
         <form class="ui form">
-            <textarea placeholder="Pleas type your instructions (splited by '\n')..."
-                      id="instructions-textarea"></textarea>
+            <textarea placeholder="Pleas type your instructions (splited by '\n')..." id="instructions-textarea"></textarea>
             <div class="ui divider"></div>
             <div class="ui teal button" id="apply-instruction-button">Apply</div>
         </form>
@@ -228,7 +227,7 @@
     <div class="header">Load One Instruction</div>
     <div class="content container">
         <form class="ui form">
-            <textarea placeholder="Pleas type your instruction..." id="one-instruction-textarea"></textarea>
+            <input placeholder="Pleas type your instruction..." id="one-instruction-input">
             <div class="ui divider"></div>
             <div class="ui teal button" id="apply-one-instruction-button">Apply</div>
         </form>
@@ -284,6 +283,8 @@
     });
 
     function refreshUI() {
+        refreshTimerTic($('#timer-tic'));
+
         refreshFPRegisters($('#fp-registers'));
         refreshCDB($('#cdb'));
         refreshReservationStations($('#reservation-stations'));
@@ -292,6 +293,7 @@
         refreshStoreQueue($('#store-queue'));
         refreshInstructions($('#instructions'));
 
+        // ToDo: refresh timer
     }
 
 
@@ -332,6 +334,7 @@
             } else {
                 timerStepN(step);
             }
+            refreshUI();
         });
     }
 
@@ -346,39 +349,36 @@
 
         const insLoadOneModal = $('#load-one-instruction-modal');
         const insApplyOneButton = $('#apply-one-instruction-button');
-        const insOneTextArea = $('#one-instruction-textarea');
+        const insOneTextArea = $('#one-instruction-input');
 
         insLoadButton.click(function () {
             insLoadModal.modal('show');
         });
         insApplyButton.click(function () {
             console.log(insTextArea.val());  // ToDo: remove this...
-
-//            ToDo: now this load from string function simply returns nothing...
-
             const result = loadInstructionsFromString(insTextArea.val());
             if (result !== true) {
                 alert(result);
             } else {
                 insLoadModal.modal('hide');
+                refreshUI();
             }
         });
         insAppendOne.click(function () {
             insLoadOneModal.modal('show');
         });
         insApplyOneButton.click(function () {
-
-//            ToDo: same problem as above...
-
             const result = loadInstructionsFromString(insOneTextArea.val());
             if (result !== true) {
                 alert(result);
             } else {
                 insLoadModal.modal('hide');
+                refreshUI();
             }
         });
         insClear.click(function () {
             clearInstructions();
+            refreshUI();
         });
     }
 

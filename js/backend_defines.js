@@ -2,7 +2,7 @@
  * Created by ytl on 2017/6/8.
  */
 let COMPLETE = false;
-let CUR_TIC = 1;
+let CUR_TIC = 0;
 const FloatPointRegisterTotal = 11;
 const MemTotal = 4096;
 const AddRSTotal = 3;
@@ -33,14 +33,14 @@ class Instruction {
     to_html_tbody() {
         return ''
             + '<tr>'
-            + '<td>' + this.Ins_Id + '</td>'
-            + '<td>' + this.Op + '</td>'
-            + '<td>' + this.Dst + '</td>'
-            + '<td>' + this.SrcJ + '</td>'
-            + '<td>' + this.SrcK + '</td>'
-            + '<td>' + (this.Out ? '<i class="large green checkmark icon"></i>' : '') + '</td>'
-            + '<td>' + (this.Exe ? '<i class="large green checkmark icon"></i>' : '') + '</td>'
-            + '<td>' + (this.WB ? '<i class="large green checkmark icon"></i>' : '') + '</td>'
+                + '<td>' + o(this.Ins_Id) + '</td>'
+                + '<td>' + o(this.Op) + '</td>'
+                + '<td>' + this.Dst + '</td>'
+                + '<td>' + this.SrcJ + '</td>'
+                + '<td>' + this.SrcK + '</td>'
+                + '<td>' + (this.Out ? '<i class="large green checkmark icon"></i>' : '') + '</td>'
+                + '<td>' + (this.Exe ? '<i class="large green checkmark icon"></i>' : '') + '</td>'
+                + '<td>' + (this.WB ? '<i class="large green checkmark icon"></i>' : '') + '</td>'
             + '</tr>';
     }
 
