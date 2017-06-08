@@ -24,13 +24,47 @@ class Instructions {
         this.Dst = Dst;
         this.SrcJ = SrcJ;
         this.SrcK = SrcK;
-        this.Out = null;
-        this.Exe = null;
-        this.WB = null;
+        this.Out = false;
+        this.Exe = false;
+        this.WB = false;
     }
 }
 
 let instructions = [];
+
+function delInstruction(Inst_Id) {
+    for (let i in instructions) {
+        if (instructions[i].Ins_Id === Inst_Id) {
+            instructions.splice(i, 1);
+            break;
+        }
+    }
+}
+function outInstruction(Inst_Id) {
+    for (let i in instructions) {
+        if (instructions[i].Ins_Id === Inst_Id) {
+            instructions[i].Out = true;
+            break;
+        }
+    }
+}
+function exeInstruction(Inst_Id) {
+    for (let i in instructions) {
+        if (instructions[i].Ins_Id === Inst_Id) {
+            instructions[i].Exe = true;
+            break;
+        }
+    }
+}
+
+function wbInstruction(Inst_Id) {
+    for (let i in instructions) {
+        if (instructions[i].Ins_Id === Inst_Id) {
+            instructions[i].WB = true;
+            break;
+        }
+    }
+}
 
 class FP {
     constructor() {
@@ -89,14 +123,23 @@ class ReservationStation {
                 calc[i]._clean();
             }
         }
-
+        delInstruction(this.Ins_Id);
     }
 
     ready() {
-
+        return (this.Qk === null) && (this.Qj === null);
     }
 
-    can_LDST() {
+    canLDST() {
+        let x = INF;
+        for (let i in rs) {
+            if ((rs[i].Type === "Load") || (rs[i].Type === "Store")) {
+                if (rs[i].LDST_Id < x) {
+                    x = rs[i].LDST_Id;
+                }
+            }
+        }
+        return x === this.LDST_Id;
     }
 
 }
@@ -106,15 +149,15 @@ for (let i = 0; i < LoadQueueTotal; i++) {
     LQ.push(new ReservationStation("Load" + i.toString(), "Load"));
 }
 let SQ = [];
-for (let i = 0; i < LoadQueueTotal; i++) {
+for (let i = 0; i < StoreQueueTotal; i++) {
     SQ.push(new ReservationStation("Store" + i.toString(), "Store"));
 }
 let addRS = [];
-for (let i = 0; i < LoadQueueTotal; i++) {
+for (let i = 0; i < AddRSTotal; i++) {
     addRS.push(new ReservationStation("Add" + i.toString(), "Add"));
 }
 let multRS = [];
-for (let i = 0; i < LoadQueueTotal; i++) {
+for (let i = 0; i < MulDivRsTotal; i++) {
     multRS.push(new ReservationStation("Mult" + i.toString(), "Mult"));
 }
 let rs = [].concat(LQ, SQ, addRS, multRS);
@@ -148,6 +191,7 @@ class Adder {
                 this.Vk = adder[0].Vk;
                 this.Progress = "2/2";
                 cdb._receiveValue(this.Dst, this.Vj + this.Vk);
+                wbInstruction(this.Ins_Id);
             }
         } else {
             for (let i in rs) {
@@ -158,6 +202,7 @@ class Adder {
                     this.Vj = rs[i].Vj;
                     this.Vk = rs[i].Vk;
                     this.Progress = "1/2";
+                    exeInstruction(this.Ins_Id);
                 }
             }
         }
@@ -214,6 +259,7 @@ class Multiplier {
             if (_progressFinish(this.Progress)) {
                 cdb._receiveValue(this.Dst, this._result);
                 this._stall = true;
+                wbInstruction(this.Ins_Id);
             }
         } else {
             for (let i in rs) {
@@ -232,6 +278,7 @@ class Multiplier {
                             alert("div by zero!!!");
                         }
                         this._result = this.Vj / this.Vk;
+                        exeInstruction(this.Ins_Id);
                     }
                 }
             }
@@ -265,6 +312,7 @@ class LDer {
             if (_progressFinish(this.Progress)) {
                 cdb._receiveValue(this.Dst, getMem(this.Addr));
                 this._stall = true;
+                wbInstruction(this.Ins_Id);
             }
         } else {
             for (let i in rs) {
@@ -273,6 +321,7 @@ class LDer {
                     this.Op = rs[i].Op;
                     this.Addr = rs[i].Addr;
                     this.Progress = "1/" + LoadCalcTime.toString();
+                    exeInstruction(this.Ins_Id);
                 }
             }
         }
@@ -308,8 +357,8 @@ class STer {
                         SQ[i]._finish();
                     }
                 }
-                // cdb.receiveValue(this.Addr, this.FP_Value);
-                // this._stall = true;
+                wbInstruction(this.Ins_Id);
+                delInstruction(this.Ins_Id);
             }
         } else {
             for (let i in rs) {
@@ -319,6 +368,7 @@ class STer {
                     this.Addr = rs[i].Addr;
                     this.FP_Value = getFP(rs[i].SrcJ);
                     this.Progress = "1/" + StoreCalcTime.toString();
+                    exeInstruction(this.Ins_Id);
                 }
             }
         }

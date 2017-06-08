@@ -166,7 +166,7 @@ function _getFPId(t) {
 function _fpReady(t) {
     return hasValue(fp[_getFPId(t)].Qi);
 }
-function _sendInstructionToRs(inst, rss) {
+function _sendInstructionToRS(inst, rss) {
     if (_op2Type(inst.Op) === "Add" || _op2Type(inst.Op) === "Mult") {
         rss.Ins_Id = inst.Ins_Id;
         rss.Busy = true;
@@ -205,6 +205,7 @@ function _sendInstructionToRs(inst, rss) {
             rss.Qj = getFP(inst.SrcJ).Qi;
         }
     }
+    outInstruction(inst.Ins_Id);
 }
 function timerStepOne() {
     if (_checkGlobalComplete()) {
@@ -224,6 +225,7 @@ function timerStepOne() {
         }
         cdb.tic();
     }
+    CUR_TIC += 1;
 }
 
 function timerStepN(n = 1) {
