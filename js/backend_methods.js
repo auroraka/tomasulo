@@ -166,7 +166,7 @@ function _getFPId(t) {
 function _fpReady(t) {
     return hasValue(fp[_getFPId(t)].Qi);
 }
-function _sendInstructionToRs(inst, rss) {
+function _sendInstructionToRS(inst, rss) {
     if (_op2Type(inst.Op) === "Add" || _op2Type(inst.Op) === "Mult") {
         rss.Ins_Id = inst.Ins_Id;
         rss.Busy = true;
@@ -205,6 +205,7 @@ function _sendInstructionToRs(inst, rss) {
             rss.Qj = getFP(inst.SrcJ).Qi;
         }
     }
+    outInstruction(inst.Ins_Id);
 }
 function timerStepOne() {
     if (_checkGlobalComplete()) {
@@ -224,6 +225,7 @@ function timerStepOne() {
         }
         cdb.tic();
     }
+    CUR_TIC += 1;
 }
 
 function timerStepN(n = 1) {
@@ -232,20 +234,31 @@ function timerStepN(n = 1) {
     }
 }
 
+// accept format: 'F0',0
 function getFP(id) {
     return FP[_getFPId(id)];
 }
 
 function setFP(id, x) {
-    FP[id].Value = x;
+    FP[_getFPId(id)].Value = x;
     return true;
 }
 
+function _getMemId(t) {
+    if (typeof(t) === "sting") {
+        return parseInt(t);
+    } else {
+        return t;
+    }
+
+}
+
+// accept format: '123',123
 function getMem(id) {
-    return memory[id];
+    return memory[_getMemId(ids)];
 }
 
 function setMem(id, x) {
-    memory[id] = x;
+    memory[_getMemId(id)] = x;
     return true;
 }

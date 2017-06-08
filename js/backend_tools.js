@@ -3,3 +3,4 @@
  */
 
 let LDST_ID_BASE = 1;
+let INF = 100000;
