@@ -1,0 +1,15 @@
+tr.two-split th {
+    width: 50%;
+}
+
+tr.five-split th {
+    width: 20%;
+}
+
+tr.seven-split th {
+    width: 15%;
+}
+
+tr.eight-split th {
+    width: 12.5%;
+}

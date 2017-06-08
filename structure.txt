@@ -30,9 +30,9 @@ Views
 
 5. RS [ 3+- 2*/ ]
 
-    Ins.Id, Name, Busy, Op, Qj, Qk, Vj, Vk
+    Name, Busy, Ins.Id, Op, Qj, Qk, Vj, Vk
 
-    '3', 'Add3', 'yes', 'SUBD', '', '', '1.23', '4.56'
+    'Add3', 'yes', '3', 'SUBD', '', '', '1.23', '4.56'
 
 
 6. Adder [ 2 ]  { first in index small }

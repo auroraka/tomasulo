@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Tomasulo</title>
     <link rel="stylesheet" type="text/css" href="lib/semantic/dist/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
 </head>
 <body>
 <div class="ui fixed inverted menu" id="top-bar">
@@ -11,8 +12,8 @@
         <i class="large home icon"></i>
         Tomasulo
     </div>
-    <a class="item">Load Instructions</a>
-    <a class="item">Modify Memory</a>
+    <a class="item" id="load-instructions-button">Load Instructions</a>
+    <a class="item" id="modify-memory-button">Modify Memory</a>
     <div class="right menu">
         <a class="ui dropdown item" id="timer-button">
             <i class="clock icon"></i>
@@ -23,118 +24,101 @@
                 <div class="item" id="timer-continue"><i class="clock icon"></i>Continue</div>
             </div>
         </a>
-
-
-        <div class="item">30</div>
+        <div class="item" id="timer-tic">30</div>
     </div>
 </div>
 <div class="hidden" id="top-bar-filler"></div>
-
 <div class="ui vertical segment">
     <div class="ui stackable grid container">
         <div class="row">
-            <div class="ui segment container">
-                <h1 class="ui header">FP Registers</h1>
-                <table class="ui center aligned celled structured definition table">
-                    <thead>
-                    <tr>
-                        <th></th>
-                        <th>F0</th>
-                        <th>F1</th>
-                        <th>F2</th>
-                        <th>F3</th>
-                        <th>F4</th>
-                        <th>F5</th>
-                        <th>F6</th>
-                        <th>F7</th>
-                        <th>F8</th>
-                        <th>F9</th>
-                        <th>F10</th>
-                    </tr>
-                    </thead>
-                    <tbody id="fp-regs">
-                    <tr>
-                        <td>Value</td>
-                        <td>1.23</td>
-                        <td>1.23</td>
-                        <td>1.23</td>
-                        <td>1.23</td>
-                        <td>1.23</td>
-                        <td>1.23</td>
-                        <td>1.23</td>
-                        <td>1.23</td>
-                        <td>1.23</td>
-                        <td>1.23</td>
-                        <td>1.23</td>
-                    </tr>
-                    <tr>
-                        <td>Qi</td>
-                        <td>Add3</td>
-                        <td>Add3</td>
-                        <td>Add3</td>
-                        <td>Add3</td>
-                        <td>Add3</td>
-                        <td>Add3</td>
-                        <td>Add3</td>
-                        <td>Add3</td>
-                        <td>Add3</td>
-                        <td>Add3</td>
-                        <td>Add3</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+            <div class="twelve wide column">
 
-
-        <div class="row">
-            <div class="nine wide column">
                 <div class="ui segment container">
-                    <h1 class="ui header">Instructions & Executing Statuses</h1>
-                    <table class="ui center aligned celled structured table">
+                    <h1 class="ui header">FP Registers</h1>
+                    <table class="ui center aligned celled structured definition table">
                         <thead>
                         <tr>
-                            <th colspan="5">Instructions</th>
-                            <th colspan="3">Executing Status</th>
-                        </tr>
-                        <tr>
-                            <th>id</th>
-                            <th>Op</th>
-                            <th>Dst</th>
-                            <th>SrcJ</th>
-                            <th>SrcK</th>
-                            <th>Out</th>
-                            <th>Exe</th>
-                            <th>WB</th>
+                            <th></th>
+                            <th>F0</th>
+                            <th>F1</th>
+                            <th>F2</th>
+                            <th>F3</th>
+                            <th>F4</th>
+                            <th>F5</th>
+                            <th>F6</th>
+                            <th>F7</th>
+                            <th>F8</th>
+                            <th>F9</th>
+                            <th>F10</th>
                         </tr>
                         </thead>
-                        <tbody id="instructions">
+                        <tbody id="fp-regs">
 
                         <tr>
-                            <td>1</td>
-                            <td>LD</td>
-                            <td>F6</td>
-                            <td>1234</td>
-                            <td></td>
-                            <td><i class="large green checkmark icon"></i></td>
-                            <td><i class="large green checkmark icon"></i></td>
-                            <td></td>
+                            <td>Value</td>
+                            <td>1.23</td>
+                            <td>1.23</td>
+                            <td>1.23</td>
+                            <td>1.23</td>
+                            <td>1.23</td>
+                            <td>1.23</td>
+                            <td>1.23</td>
+                            <td>1.23</td>
+                            <td>1.23</td>
+                            <td>1.23</td>
+                            <td>1.23</td>
+                        </tr>
+                        <tr>
+                            <td>Qi</td>
+                            <td>Add3</td>
+                            <td>Add3</td>
+                            <td>Add3</td>
+                            <td>Add3</td>
+                            <td>Add3</td>
+                            <td>Add3</td>
+                            <td>Add3</td>
+                            <td>Add3</td>
+                            <td>Add3</td>
+                            <td>Add3</td>
+                            <td>Add3</td>
                         </tr>
 
                         </tbody>
-
                     </table>
                 </div>
-
-
+            </div>
+            <div class="four wide column">
                 <div class="ui segment container">
-                    <h1>Reservation Stations</h1>
+                    <h1 class="ui header">CDB</h1>
                     <table class="ui center aligned celled structured table">
                         <thead>
+                        <tr class="two-split">
+                            <th>RS.Name</th>
+                            <th>Value</th>
+                        </tr>
+                        </thead>
+                        <tbody id="cgb">
+
                         <tr>
-                            <th>id</th>
-                            <th>Name</th>
+                            <td>Add1</td>
+                            <td>5.67</td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="eight wide column">
+                <div class="ui segment container">
+                    <h1>Reservation Stations</h1>
+                    <table class="ui center aligned celled structured definition table">
+                        <thead>
+                        <tr class="eight-split">
+                            <th></th>
                             <th>Busy</th>
+                            <th>id</th>
                             <th>Op</th>
                             <th>Qj</th>
                             <th>Qk</th>
@@ -143,23 +127,75 @@
                         </tr>
                         </thead>
                         <tbody id="s">
+
+                        <tr>
+                            <td>Add1</td>
+                            <td>yes</td>
+                            <td>3</td>
+                            <td>SUBD</td>
+                            <td></td>
+                            <td></td>
+                            <td>1.23</td>
+                            <td>4.56</td>
+                        </tr>
+                        <tr>
+                            <td>Add2</td>
+                            <td>yes</td>
+                            <td>3</td>
+                            <td>SUBD</td>
+                            <td></td>
+                            <td></td>
+                            <td>1.23</td>
+                            <td>4.56</td>
+                        </tr>
+                        <tr>
+                            <td>Add3</td>
+                            <td>yes</td>
+                            <td>3</td>
+                            <td>SUBD</td>
+                            <td></td>
+                            <td></td>
+                            <td>1.23</td>
+                            <td>4.56</td>
+                        </tr>
+                        <tr>
+                            <td>Mult1</td>
+                            <td>yes</td>
+                            <td>3</td>
+                            <td>SUBD</td>
+                            <td></td>
+                            <td></td>
+                            <td>1.23</td>
+                            <td>4.56</td>
+                        </tr>
+                        <tr>
+                            <td>Mult2</td>
+                            <td>yes</td>
+                            <td>3</td>
+                            <td>SUBD</td>
+                            <td></td>
+                            <td></td>
+                            <td>1.23</td>
+                            <td>4.56</td>
+                        </tr>
+
                         </tbody>
                     </table>
                 </div>
-
-
+            </div>
+            <div class="eight wide column">
                 <div class="ui segment container">
                     <h1>Calculators</h1>
-                    <table class="ui center aligned celled structured table">
+                    <table class="ui center aligned celled structured definition table">
                         <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>id</th>
-                            <th>Op</th>
-                            <th>Dst</th>
-                            <th>Vj</th>
-                            <th>Vk</th>
-                            <th>Progress</th>
+                            <th style="width: 22%;"></th>
+                            <th style="width: 13%;">id</th>
+                            <th style="width: 13%;">Op</th>
+                            <th style="width: 13%;">Dst</th>
+                            <th style="width: 13%;">Vj</th>
+                            <th style="width: 13%;">Vk</th>
+                            <th style="width: 13%;">Progress</th>
                         </tr>
                         </thead>
                         <tbody id="calculator">
@@ -210,19 +246,18 @@
                             <td></td>
                         </tr>
 
-
                         </tbody>
                     </table>
                 </div>
             </div>
-
-            <div class="seven wide column">
-
+        </div>
+        <div class="row">
+            <div class="eight wide column">
                 <div class="ui segment container">
                     <h1>Load Queue</h1>
                     <table class="ui center aligned celled structured table">
                         <thead>
-                        <tr>
+                        <tr class="five-split">
                             <th>id</th>
                             <th>Name</th>
                             <th>LS.id</th>
@@ -239,18 +274,32 @@
                             <td>yes</td>
                             <td>1234</td>
                         </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>Load1</td>
+                            <td>6</td>
+                            <td>yes</td>
+                            <td>1234</td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>Load1</td>
+                            <td>6</td>
+                            <td>yes</td>
+                            <td>1234</td>
+                        </tr>
 
                         </tbody>
-
                     </table>
                 </div>
-
+            </div>
+            <div class="eight wide column">
                 <div class="ui segment container">
                     <h1>Store Queue</h1>
                     <table class="ui center aligned celled structured table">
                         <thead>
-                        <tr>
-                            <th>id</th>
+                        <tr class="seven-split">
+                            <th style="width: 10%">id</th>
                             <th>Name</th>
                             <th>LS.id</th>
                             <th>Busy</th>
@@ -294,20 +343,93 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="twelve wide column">
+                <div class="ui segment container">
+                    <h1 class="ui header">Instructions & Executing Statuses</h1>
+                    <table class="ui center aligned celled structured table">
+                        <thead>
+                        <tr>
+                            <th colspan="5">Instructions</th>
+                            <th colspan="3">Executing Status</th>
+                        </tr>
+                        <tr class="eight-split">
+                            <th>id</th>
+                            <th>Op</th>
+                            <th>Dst</th>
+                            <th>SrcJ</th>
+                            <th>SrcK</th>
+                            <th>Out</th>
+                            <th>Exe</th>
+                            <th>WB</th>
+                        </tr>
+                        </thead>
+                        <tbody id="instructions">
+
+                        <tr>
+                            <td>1</td>
+                            <td>LD</td>
+                            <td>F6</td>
+                            <td>1234</td>
+                            <td></td>
+                            <td><i class="large green checkmark icon"></i></td>
+                            <td><i class="large green checkmark icon"></i></td>
+                            <td></td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="four wide column">
+                <div class="ui segment container">
+                    <h1 class="ui header">Memory</h1>
+                    <div class="ui two fluid buttons">
+                        <div class="ui fluid teal button" id="memory-watch">Watch</div>
+                        <div class="ui fluid red button" id="memory-clear">Clear</div>
+                    </div>
+                    <table class="ui center aligned celled structured table">
+                        <thead>
+                        <tr class="two-split">
+                            <th>Addr</th>
+                            <th>Value</th>
+                        </tr>
+                        </thead>
+                        <tbody id="memory">
+
+                        <tr>
+                            <td>1234</td>
+                            <td>5.67</td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
+<div class="ui modal" id="load-instructions-modal">
+    <i class="close icon"></i>
+    <div class="header">Load Instructions</div>
+    <div class="content container">
+        <form class="ui form">
+            <textarea placeholder="Pleas type your instructions (splited by '\n')..." id="instructions-textarea"></textarea>
+            <div class="ui divider"></div>
+            <div class="ui teal button" id="apply-instruction-button">Apply</div>
+        </form>
+    </div>
+</div>
 
 <script type="text/javascript" src="lib/jquery-3.2.1/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="lib/semantic/dist/semantic.min.js"></script>
-
 <script type="text/javascript" src="js/backend_tools.js"></script>
 <script type="text/javascript" src="js/backend_defines.js"></script>
 <script type="text/javascript" src="js/backend_methods.js"></script>
 <script type="text/javascript" src="js/index.js"></script>
 <script type="text/javascript" src="js/ui.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
-
 <script>
     $(function () {
         $('#top-bar-filler').css('height', $('#top-bar').height());
@@ -315,12 +437,13 @@
         main();
 
         initTimer();
+        initLoadInstructions();
     });
 
     function initTimer() {
-        let timerButton = $('#timer-button');
-        let timerSpan = $('#timer-span');
-        let timer1 = $('#timer-1');
+        const timerButton = $('#timer-button');
+        const timerSpan = $('#timer-span');
+        const timer1 = $('#timer-1');
         const timer5 = $('#timer-5');
         const timerContinue = $('#timer-continue');
 
@@ -340,7 +463,7 @@
             timerSpan.text(timerContinue.text());
         });
         timerButton.click(function () {
-            console.log(timerButton.val());
+            console.log(timerButton.val());  // ToDo: remove this...
             let step = timerButton.val();
             if (COMPLETE || (step <= 0)) {
                 return;
@@ -351,6 +474,26 @@
                 timerStepN(step);
             }
         });
+    }
+    
+    function initLoadInstructions() {
+        const insLoadButton = $('#load-instructions-button');
+        const insLoadModal = $('#load-instructions-modal');
+        const insApplyButton = $('#apply-instruction-button');
+        const insTextArea = $('#instructions-textarea');
+
+        insLoadButton.click(function () {
+            insLoadModal.modal('show');
+        });
+        insApplyButton.click(function () {
+            console.log(insTextArea.val());  // ToDo: remove this...
+
+
+
+
+            insLoadModal.modal('hide');
+        })
+
     }
 </script>
 
