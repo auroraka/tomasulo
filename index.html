@@ -359,6 +359,7 @@
                 alert(result);
             } else {
                 refreshUI();
+                insTextArea.val('');
                 insLoadModal.modal('hide');
             }
         });
@@ -371,6 +372,7 @@
                 alert(result);
             } else {
                 refreshUI();
+                insOneTextArea.val('');
                 insLoadOneModal.modal('hide');
             }
         });
@@ -390,17 +392,23 @@
         const memoryWatchClear = $('#memory-clear');
         const memoryWatchApply = $('#apply-watch-memory-button');
 
+        const memoryAddr = $('#memory-addr');
+        const memoryValue = $('#memory-value');
+        const memoryWatchAddr = $('#watch-memory-addr');
+
         memoryModifyButton.click(function () {
             memoryModifyModal.modal('show');
         });
         memoryModifyApply.click(function () {
-            const addr = parseInt($('#memory-addr').val());
-            const value = parseFloat($('#memory-value').val());
+            const addr = parseInt(memoryAddr.val());
+            const value = parseFloat(memoryValue.val());
 
             // ToDo: check addr is number...?
 
             if ((0 <= addr) && (addr < MemTotal)) {
                 setMem(addr, value);
+                memoryAddr.val('');
+                memoryValue.val('');
                 alert('Memory Value Saved!');
             } else {
                 alert('Invalid Params!');
@@ -411,7 +419,7 @@
             memoryWatchModal.modal('show');
         });
         memoryWatchApply.click(function () {
-            const addr = parseInt($('#watch-memory-addr').val());
+            const addr = parseInt(memoryWatchAddr.val());
 
             // ToDo: check addr is number...?
 
@@ -419,6 +427,7 @@
 
             if ((0 <= addr) && (addr < MemTotal)) {
                 addOneAddrToMemWatchList(addr);
+                memoryWatchAddr.val('');
                 refreshUI();
             } else {
                 alert('Invalid Params!');
