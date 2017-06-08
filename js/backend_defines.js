@@ -86,7 +86,8 @@ for (let i in fp) {
     // ToDo: error here?
 }
 
-let memory = newList(MemTotal, 0);
+let memory = Array(MemTotal).fill(0);
+// let memory = newList(MemTotal, 0);
 
 class ReservationStation {
     constructor(Name = null, Type = null, Ins_Id = null, Op = null, Qj = null, Qk = null, Vj = null, Vk = null, Busy = null, Addr = null, LDST_Id = null) {

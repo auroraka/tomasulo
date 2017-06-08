@@ -425,7 +425,8 @@
     <div class="header">Load Instructions</div>
     <div class="content container">
         <form class="ui form">
-            <textarea placeholder="Pleas type your instructions (splited by '\n')..." id="instructions-textarea"></textarea>
+            <textarea placeholder="Pleas type your instructions (splited by '\n')..."
+                      id="instructions-textarea"></textarea>
             <div class="ui divider"></div>
             <div class="ui teal button" id="apply-instruction-button">Apply</div>
         </form>
@@ -446,6 +447,7 @@
 
 <script type="text/javascript" src="lib/jquery-3.2.1/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="lib/semantic/dist/semantic.min.js"></script>
+<script type="text/javascript" src="js/tools.js"></script>
 <script type="text/javascript" src="js/backend_tools.js"></script>
 <script type="text/javascript" src="js/backend_defines.js"></script>
 <script type="text/javascript" src="js/backend_methods.js"></script>
@@ -514,7 +516,7 @@
             }
         });
     }
-    
+
     function initLoadInstructions() {
         const insLoadButton = $('#load-instructions-button');
         const insAppendOne = $('#append-one-instruction');
