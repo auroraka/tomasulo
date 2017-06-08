@@ -18,7 +18,7 @@ const StoreCalcTime = 2;
 const CDB_BAND_WITH = INF;
 let _INST_ID = 1;
 
-class Instructions {
+class Instruction {
     constructor(Op, Dst, SrcJ, SrcK) {
         this.Ins_Id = _INST_ID++;
         this.Op = Op;
@@ -33,15 +33,24 @@ class Instructions {
     to_html_tbody() {
         return ''
             + '<tr>'
-                + '<td>' + this.Ins_Id + '</td>'
-                + '<td>' + this.Op + '</td>'
-                + '<td>' + this.Dst + '</td>'
-                + '<td>' + this.SrcJ + '</td>'
-                + '<td>' + this.SrcK + '</td>'
-                + '<td>' + (this.Out ? '<i class="large green checkmark icon"></i>' : '') + '</td>'
-                + '<td>' + (this.Exe ? '<i class="large green checkmark icon"></i>' : '') + '</td>'
-                + '<td>' + (this.WB ? '<i class="large green checkmark icon"></i>' : '') + '</td>'
+            + '<td>' + this.Ins_Id + '</td>'
+            + '<td>' + this.Op + '</td>'
+            + '<td>' + this.Dst + '</td>'
+            + '<td>' + this.SrcJ + '</td>'
+            + '<td>' + this.SrcK + '</td>'
+            + '<td>' + (this.Out ? '<i class="large green checkmark icon"></i>' : '') + '</td>'
+            + '<td>' + (this.Exe ? '<i class="large green checkmark icon"></i>' : '') + '</td>'
+            + '<td>' + (this.WB ? '<i class="large green checkmark icon"></i>' : '') + '</td>'
             + '</tr>';
+    }
+
+    toString() {
+
+        let x = this.Ins_Id.toString() + " " + this.Op.toString() + " " + this.Dst.toString() + " " + this.SrcJ.toString() + " ";
+        if (this.SrcK) {
+            x += this.SrcK.toString();
+        }
+        return x;
     }
 }
 
