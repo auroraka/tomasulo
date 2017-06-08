@@ -275,14 +275,12 @@
 <script type="text/javascript" src="js/ui.js"></script>
 <script type="text/javascript" src="js/debug.js"></script>
 <script>
-    console.log(fp);
     $(function () {
         $('#top-bar-filler').css('height', $('#top-bar').height());
 
         initTimer();
         initInstructions();
         initMemory();
-
 
         refreshUI();
     });
@@ -298,7 +296,6 @@
         refreshInstructions($('#instructions'));
         refreshMemories($('#memory'));
     }
-
 
     function initTimer() {
         const timerButton = $('#timer-button');
@@ -327,7 +324,6 @@
             timerSpan.text(timerContinue.text());
         });
         timerButton.click(function () {
-            console.log(timerButton.val());  // ToDo: remove this...
             let step = timerButton.val();
             if (COMPLETE || (step <= 0)) {
                 return;
@@ -358,7 +354,6 @@
             insLoadModal.modal('show');
         });
         insApplyButton.click(function () {
-            console.log(insTextArea.val());  // ToDo: remove this...
             const result = loadInstructionsFromString(insTextArea.val());
             if (result !== true) {
                 alert(result);
@@ -435,8 +430,6 @@
             refreshUI();
         });
     }
-
-
 </script>
 
 <button onclick="debug_run();">DEBUG</button>
