@@ -7,10 +7,7 @@ function refreshFPRegisters(fp_reg_tbody) {
     console.log(fp);
     for (let i in fp) {
         console.log(fp[i]);
-
-
     }
-
     //
     // for (let i = 0; i < FloatPointRegisterTotal; ++i) {
     //
