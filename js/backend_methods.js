@@ -82,7 +82,6 @@ function _str2inst(text) {
 
 function loadInstructionsFromString(text) {
     console.log(text);
-    return;
     let lines = text.split("\n");
     let insts = [];
     for (let i in lines) {

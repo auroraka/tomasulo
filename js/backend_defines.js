@@ -83,6 +83,7 @@ class FP {
 let fp = FP[FloatPointRegisterTotal];
 for (let i in fp) {
     fp[i].FP_ID = i;
+    // ToDo: error here?
 }
 
 let memory = newList(MemTotal, 0);
