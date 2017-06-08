@@ -4,18 +4,20 @@
 
 
 function _parse_three_params(name, params) {
+    console.log("_parse_three_params");
+    let result = Object();
     if (!hasValue(params) || (params.length < 3)) {
-        return false;
+        result.error = "params invalid";
+        return result;
     }
     let v = Object();
-    let result = Object();
     v.a = params[0].slice(1);
     v.b = params[1].slice(1);
     v.c = params[2].slice(1);
     let x = (!isNaN(v.a) && !isNaN(v.b) && !isNaN(v.c) && v.a < FloatPointRegisterTotal && v.b < FloatPointRegisterTotal && v.c < FloatPointRegisterTotal);
     if (x) {
         result.error = true;
-        result.inst = Instruction(name, params[0], params[1], params[2]);
+        result.inst = new Instruction(name, params[0], params[1], params[2]);
         return result;
     } else {
         result.error = "instruction invalid";
@@ -23,10 +25,14 @@ function _parse_three_params(name, params) {
     }
 }
 function _parse_addr_params(name, params) {
-    if (!hasValue(params) || (params.length < 2)) {
-        return false;
-    }
+    console.log("_parse_addr_params");
     let result = Object();
+    if (!hasValue(params) || (params.length < 2)) {
+        console.log(params.length);
+        console.log(params);
+        result.error = "params invalid";
+        return result;
+    }
     let v = Object();
     v.a = params[0].slice(1);
     v.b = params[1];
@@ -34,9 +40,9 @@ function _parse_addr_params(name, params) {
     if (x) {
         result.error = true;
         if (name == "LD") {
-            result.inst = Instruction(name, params[1], params[0], null);
+            result.inst = new Instruction(name, params[0], params[1], null);
         } else {
-            result.inst = Instruction(name, params[0], params[1], null);
+            result.inst = new Instruction(name, params[1], params[0], null);
         }
         return result;
     } else {
@@ -46,6 +52,8 @@ function _parse_addr_params(name, params) {
 
 }
 function _str2inst(text) {
+    console.log("str2insts");
+
     let result = Object();
     if (!hasValue(text)) {
         result.error = "input is empty";
@@ -54,6 +62,8 @@ function _str2inst(text) {
     let ls = text.split(" ");
     let name = ls[0];
     let params = ls[1].split(",");
+    console.log(name);
+    console.log(params);
     switch (name) {
         case "ADDD":
             return _parse_three_params(name, params);
@@ -81,7 +91,6 @@ function _str2inst(text) {
 }
 
 function loadInstructionsFromString(text) {
-    console.log(text);
     let lines = text.split("\n");
     let insts = [];
     for (let i in lines) {
@@ -156,17 +165,12 @@ function _opSameAsType(op, type) {
     }
 }
 
-function _getFPId(t) {
-    if (typeof(t) === "number") {
-        return t;
-    } else if (typeof(t) === "string") {
-        return parseInt(t.slice(1));
-    }
-}
 function _fpReady(t) {
-    return hasValue(fp[_getFPId(t)].Qi);
+    return !hasValue(fp[_getFPId(t)].Qi);
 }
 function _sendInstructionToRS(inst, rss) {
+    Info("[send inst]", inst.toString());
+    console.log(inst);
     if (_op2Type(inst.Op) === "Add" || _op2Type(inst.Op) === "Mult") {
         rss.Ins_Id = inst.Ins_Id;
         rss.Busy = true;
@@ -209,14 +213,16 @@ function _sendInstructionToRS(inst, rss) {
 }
 function timerStepOne() {
     if (_checkGlobalComplete()) {
+        console.log("finish");
         return false;
     }
     if (instructions.length > 0) {
         let inst = instructions[0];
+        Info("[try send inst]", inst.toString());
         for (let i in rs) {
             if (_opSameAsType(inst.Op, rs[i].Type) && (!rs[i].Busy)) {
                 _sendInstructionToRS(inst, rs[i]);
-                inst.shift();
+                instructions.shift();
                 break;
             }
         }
@@ -242,13 +248,21 @@ function timerStepContinue() {
         }
     }
 }
+function _getFPId(t) {
+    if (typeof(t) === "number") {
+        return t;
+    } else if (typeof(t) === "string") {
+        return parseInt(t.slice(1));
+    }
+}
+
 // accept format: 'F0',0
 function getFP(id) {
-    return FP[_getFPId(id)];
+    return fp[_getFPId(id)];
 }
 
 function setFP(id, x) {
-    FP[_getFPId(id)].Value = x;
+    fp[_getFPId(id)].Value = x;
     return true;
 }
 
@@ -261,7 +275,7 @@ function _getMemId(t) {
 
 }
 
-// accept format: '123',123
+// accsept format: '123',123
 function getMem(id) {
     return memory[_getMemId(ids)];
 }

@@ -17,7 +17,7 @@ const LoadCalcTime = 2;
 const StoreCalcTime = 2;
 const CDB_BAND_WITH = INF;
 let _INST_ID = 1;
-class Instructions {
+class Instruction {
     constructor(Op, Dst, SrcJ, SrcK) {
         this.Ins_Id = _INST_ID++;
         this.Op = Op;
@@ -27,6 +27,15 @@ class Instructions {
         this.Out = false;
         this.Exe = false;
         this.WB = false;
+    }
+
+    toString() {
+
+        let x = this.Ins_Id.toString() + " " + this.Op.toString() + " " + this.Dst.toString() + " " + this.SrcJ.toString() + " ";
+        if (this.SrcK) {
+            x += this.SrcK.toString();
+        }
+        return x;
     }
 }
 
