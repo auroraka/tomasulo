@@ -167,7 +167,7 @@ class ReservationStation {
         let x = INF;
         for (let i in rs) {
             if ((rs[i].Type === "Load") || (rs[i].Type === "Store")) {
-                if (rs[i].LDST_Id < x) {
+                if (hasValue(rs[i].LDST_Id) && rs[i].LDST_Id < x) {
                     x = rs[i].LDST_Id;
                 }
             }
@@ -406,9 +406,9 @@ class LDer {
             }
         } else {
             for (let i in rs) {
-                if ((rs[i].Type === "Load") && (rs[i].ready()) && (rs[i].canLDST())) {
+                if ((rs[i].Type === "Load") && (rs[i].canLDST())) {
                     this.Ins_Id = rs[i].Ins_Id;
-                    this.Op = rs[i].Op;
+                    this.Op = "LD";
                     this.Addr = rs[i].Addr;
                     this.Progress = "1/" + LoadCalcTime.toString();
                     exeInstruction(this.Ins_Id);
@@ -464,7 +464,7 @@ class STer {
             for (let i in rs) {
                 if ((rs[i].Type === "Store") && (rs[i].ready()) && (rs[i].canLDST())) {
                     this.Ins_Id = rs[i].Ins_Id;
-                    this.Op = rs[i].Op;
+                    this.Op = "ST";
                     this.Addr = rs[i].Addr;
                     this.FP_Value = getFP(rs[i].SrcJ);
                     this.Progress = "1/" + StoreCalcTime.toString();
