@@ -36,3 +36,11 @@ function Error(text) {
 function cloneObject(obj) {
     return $.extend([], [obj])[0];
 }
+
+function o(text) {
+    if (text === null) {
+        return "";
+    } else {
+        return text.toString();
+    }
+}

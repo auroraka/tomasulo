@@ -300,14 +300,16 @@ function _getInstructionById(id) {
 }
 
 function _progressAdd(progress) {
-    console.log("add progress");
+    console.log("add progress " + progress);
     ab = progress.split("/");
     let a = parseInt(ab[0]);
     let b = parseInt(ab[1]);
     if (a < b) {
         a += 1;
     }
-    return a.toString() + "/" + b.toString();
+    let res = a.toString() + "/" + b.toString()
+    console.log("now progress " + res);
+    return res;
 }
 function _progressFinish(progress) {
     ab = progress.split("/");
@@ -380,7 +382,14 @@ class Multiplier {
 assert(MultiplierTotal === 1);
 let multiplier = new Multiplier();
 
-
+function _getRSById(Inst_Id) {
+    for (let i in rs) {
+        if (rs[i].Ins_Id === Inst_Id) {
+            return rs[i];
+        }
+    }
+    return null;
+}
 class LDer {
     constructor() {
         this.Ins_Id = null;
@@ -399,9 +408,10 @@ class LDer {
             return;
         }
         if (hasValue(this.Ins_Id)) {
-            _progressAdd(this.Progress);
+            this.Progress = _progressAdd(this.Progress);
             if (_progressFinish(this.Progress)) {
-                cdb._receiveValue(this.Dst, getMem(this.Addr));
+                console.log(_getRSById(this.Ins_Id));
+                cdb._receiveValue(_getRSById(this.Ins_Id).Name, getMem(this.Addr));
                 this._stall = true;
                 wbInstruction(this.Ins_Id);
             }
@@ -450,7 +460,7 @@ class STer {
         //     return;
         // }
         if (hasValue(this.Ins_Id)) {
-            _progressAdd(this.Progress);
+            this.Progress = _progressAdd(this.Progress);
             if (_progressFinish(this.Progress)) {
                 setMem(this.Addr, this.FP_Value);
                 for (let i in SQ) {

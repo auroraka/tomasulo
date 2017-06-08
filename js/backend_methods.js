@@ -277,7 +277,7 @@ function _getMemId(t) {
 
 // accsept format: '123',123
 function getMem(id) {
-    return memory[_getMemId(ids)];
+    return memory[_getMemId(id)];
 }
 
 
