@@ -5,6 +5,7 @@ function refreshInstructions(instructions) {
         inst_tbody.append(value.to_html_tbody());
     });
 }
+
 function regs_to_html_tbody(regs) {
     let x = "";
     x += '<tr>';
@@ -12,21 +13,19 @@ function regs_to_html_tbody(regs) {
         x += '<td>' + regs[i].toString() + '</td>'
     }
     x += '</tr>';
-    // x += '<tr>';
-    // for (let i in regs) {
-    //     x += '<td>' + objectId(regs[i]) + '</td>'
-    // }
-    // x += '</tr>';
     return x;
 }
-function refreshRegisters() {
+
+function refreshRegisters(reg_tbody) {
     let regs = [];
-    for (let i = 0; i < RegisterTotal; i++) {
+    for (let i = 0; i < FloatPointRegisterTotal; i++) {
         regs.push(getRegisterValue(i))
     }
-    let reg_tbody = $('#regs');
+    // let reg_tbody = $('#regs');
     reg_tbody.text('');
     reg_tbody.append(regs_to_html_tbody(regs));
+
+    // ToDo: 1. Value; 2. Qi
 }
 
 function refreshMems() {

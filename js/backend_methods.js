@@ -79,6 +79,7 @@ function _str2inst(text) {
             break;
     }
 }
+
 function loadInstructionsFromString(text) {
     console.log(text);
     return;

@@ -13,15 +13,19 @@
         Tomasulo
     </div>
     <a class="item" id="load-instructions-button">Load Instructions</a>
-    <a class="item" id="modify-memory-button">Modify Memory</a>
+    <a class="ui dropdown item" id="modify-memory-button">
+        Modify Memory
+
+
+    </a>
     <div class="right menu">
         <a class="ui dropdown item" id="timer-button">
-            <i class="clock icon"></i>
+            <i class="clock icon" id="timer-icon"></i>
             <span id="timer-span">Timer ++</span>
             <div class="menu">
                 <div class="item" id="timer-1"><i class="clock icon"></i>Timer ++</div>
                 <div class="item" id="timer-5"><i class="clock icon"></i>Timer + 5</div>
-                <div class="item" id="timer-continue"><i class="clock icon"></i>Continue</div>
+                <div class="item" id="timer-continue"><i class="play icon"></i>Continue</div>
             </div>
         </a>
         <div class="item" id="timer-tic">30</div>
@@ -52,7 +56,7 @@
                             <th>F10</th>
                         </tr>
                         </thead>
-                        <tbody id="fp-regs">
+                        <tbody id="fp-registers">
 
                         <tr>
                             <td>Value</td>
@@ -346,7 +350,13 @@
         <div class="row">
             <div class="twelve wide column">
                 <div class="ui segment container">
-                    <h1 class="ui header">Instructions & Executing Statuses</h1>
+                    <h1 class="ui header">
+                        Instructions & Executing Statuses
+                        <div class="ui right floated buttons">
+                            <div class="ui teal button" id="append-one-instruction">Append One</div>
+                            <div class="ui red button" id="clear-instructions">Clear</div>
+                        </div>
+                    </h1>
                     <table class="ui center aligned celled structured table">
                         <thead>
                         <tr>
@@ -385,8 +395,8 @@
                 <div class="ui segment container">
                     <h1 class="ui header">Memory</h1>
                     <div class="ui two fluid buttons">
-                        <div class="ui fluid teal button" id="memory-watch">Watch</div>
-                        <div class="ui fluid red button" id="memory-clear">Clear</div>
+                        <div class="ui teal button" id="memory-watch">Watch</div>
+                        <div class="ui red button" id="memory-clear">Clear</div>
                     </div>
                     <table class="ui center aligned celled structured table">
                         <thead>
@@ -422,6 +432,18 @@
     </div>
 </div>
 
+<div class="ui modal" id="load-one-instruction-modal">
+    <i class="close icon"></i>
+    <div class="header">Load One Instruction</div>
+    <div class="content container">
+        <form class="ui form">
+            <textarea placeholder="Pleas type your instruction..." id="one-instruction-textarea"></textarea>
+            <div class="ui divider"></div>
+            <div class="ui teal button" id="apply-one-instruction-button">Apply</div>
+        </form>
+    </div>
+</div>
+
 <script type="text/javascript" src="lib/jquery-3.2.1/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="lib/semantic/dist/semantic.min.js"></script>
 <script type="text/javascript" src="js/backend_tools.js"></script>
@@ -438,10 +460,24 @@
 
         initTimer();
         initLoadInstructions();
+
+
+        refreshUI();
     });
+
+    function refreshUI() {
+        const fp_reg_tbody = $('#fp-registers');
+
+
+        refreshRegisters(fp_reg_tbody);
+
+
+    }
+
 
     function initTimer() {
         const timerButton = $('#timer-button');
+        const timerIcon = $('#timer-icon');
         const timerSpan = $('#timer-span');
         const timer1 = $('#timer-1');
         const timer5 = $('#timer-5');
@@ -452,14 +488,17 @@
         });
         timer1.click(function () {
             timerButton.val(1);
+            timerIcon.removeClass('play').addClass('clock');
             timerSpan.text(timer1.text());
         });
         timer5.click(function () {
             timerButton.val(5);
+            timerIcon.removeClass('play').addClass('clock');
             timerSpan.text(timer5.text());
         });
         timerContinue.click(function () {
             timerButton.val(0);
+            timerIcon.removeClass('clock').addClass('play');
             timerSpan.text(timerContinue.text());
         });
         timerButton.click(function () {
@@ -478,9 +517,16 @@
     
     function initLoadInstructions() {
         const insLoadButton = $('#load-instructions-button');
+        const insAppendOne = $('#append-one-instruction');
+        const insClear = $('#clear-instructions');
+
         const insLoadModal = $('#load-instructions-modal');
         const insApplyButton = $('#apply-instruction-button');
         const insTextArea = $('#instructions-textarea');
+
+        const insLoadOneModal = $('#load-one-instruction-modal');
+        const insApplyOneButton = $('#apply-one-instruction-button');
+        const insOneTextArea = $('#one-instruction-textarea');
 
         insLoadButton.click(function () {
             insLoadModal.modal('show');
@@ -488,12 +534,32 @@
         insApplyButton.click(function () {
             console.log(insTextArea.val());  // ToDo: remove this...
 
+//            ToDo: now this load from string function simply returns nothing...
 
+            const result = loadInstructionsFromString(insTextArea.val());
+            if (result !== true) {
+                alert(result);
+            } else {
+                insLoadModal.modal('hide');
+            }
+        });
+        insAppendOne.click(function () {
+            insLoadOneModal.modal('show');
+        });
+        insApplyOneButton.click(function () {
 
+//            ToDo: same problem as above...
 
-            insLoadModal.modal('hide');
-        })
-
+            const result = loadInstructionsFromString(insOneTextArea.val());
+            if (result !== true) {
+                alert(result);
+            } else {
+                insLoadModal.modal('hide');
+            }
+        });
+        insClear.click(function () {
+            clearInstructions();
+        });
     }
 </script>
 
