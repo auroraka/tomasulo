@@ -17,6 +17,7 @@ const LoadCalcTime = 2;
 const StoreCalcTime = 2;
 const CDB_BAND_WITH = INF;
 let _INST_ID = 1;
+
 class Instructions {
     constructor(Op, Dst, SrcJ, SrcK) {
         this.Ins_Id = _INST_ID++;
@@ -27,6 +28,20 @@ class Instructions {
         this.Out = false;
         this.Exe = false;
         this.WB = false;
+    }
+
+    to_html_tbody() {
+        return ''
+            + '<tr>'
+                + '<td>' + this.Ins_Id + '</td>'
+                + '<td>' + this.Op + '</td>'
+                + '<td>' + this.Dst + '</td>'
+                + '<td>' + this.SrcJ + '</td>'
+                + '<td>' + this.SrcK + '</td>'
+                + '<td>' + (this.Out ? '<i class="large green checkmark icon"></i>' : '') + '</td>'
+                + '<td>' + (this.Exe ? '<i class="large green checkmark icon"></i>' : '') + '</td>'
+                + '<td>' + (this.WB ? '<i class="large green checkmark icon"></i>' : '') + '</td>'
+            + '</tr>';
     }
 }
 
@@ -78,12 +93,19 @@ class FP {
             this.Value = val;
         }
     }
+
+    to_html_tbody_value() {
+        return '<td>' + this.Value + '</td>';
+    }
+
+    to_html_tbody_qi() {
+        return '<td>' + this.Qi + '</td>';
+    }
 }
 
 let fp = newList(new FP(), FloatPointRegisterTotal);
 for (let i in fp) {
     fp[i].FP_ID = i;
-    // ToDo: error here?
 }
 
 let memory = Array(MemTotal).fill(0);
@@ -144,6 +166,43 @@ class ReservationStation {
         return x === this.LDST_Id;
     }
 
+    to_html_tbody() {
+        return ''
+            + '<tr>'
+                + '<td>' + this.Name + '</td>'
+                + '<td>' + this.Busy + '</td>'
+                + '<td>' + this.Ins_Id + '</td>'
+                + '<td>' + this.Op + '</td>'
+                + '<td>' + this.Qj + '</td>'
+                + '<td>' + this.Qk + '</td>'
+                + '<td>' + this.Vj + '</td>'
+                + '<td>' + this.Vk + '</td>'
+            + '</tr>';
+    }
+
+    to_html_tbody_lq() {
+        return ''
+            + '<tr>'
+                + '<td>' + this.Ins_Id + '</td>'
+                + '<td>' + this.Name + '</td>'
+                + '<td>' + this.LDST_Id + '</td>'
+                + '<td>' + this.Busy + '</td>'
+                + '<td>' + this.Addr + '</td>'
+            + '</tr>';
+    }
+
+    to_html_tbody_sq() {
+        return ''
+            + '<tr>'
+                + '<td>' + this.Ins_Id + '</td>'
+                + '<td>' + this.Name + '</td>'
+                + '<td>' + this.LDST_Id + '</td>'
+                + '<td>' + this.Busy + '</td>'
+                + '<td>' + this.Qj + '</td>'
+                + '<td>' + this.Vj + '</td>'
+                + '<td>' + this.Addr + '</td>'
+            + '</tr>';
+    }
 }
 
 let LQ = [];
@@ -208,6 +267,16 @@ class Adder {
                 }
             }
         }
+    }
+
+    to_html_tbody_tds() {
+        return ''
+            + '<td>' + this.Ins_Id + '</td>'
+            + '<td>' + this.Op + '</td>'
+            + '<td>' + this.Dst + '</td>'
+            + '<td>' + this.Vj + '</td>'
+            + '<td>' + this.Vk + '</td>'
+            + '<td>' + this.Progress + '</td>';
     }
 }
 assert(AdderTotal == 2);
@@ -286,6 +355,16 @@ class Multiplier {
             }
         }
     }
+
+    to_html_tbody_tds() {
+        return ''
+            + '<td>' + this.Ins_Id + '</td>'
+            + '<td>' + this.Op + '</td>'
+            + '<td>' + this.Dst + '</td>'
+            + '<td>' + this.Vj + '</td>'
+            + '<td>' + this.Vk + '</td>'
+            + '<td>' + this.Progress + '</td>';
+    }
 }
 
 assert(MultiplierTotal === 1);
@@ -327,6 +406,16 @@ class LDer {
                 }
             }
         }
+    }
+
+    to_html_tbody_tds() {
+        return ''
+            + '<td>' + this.Ins_Id + '</td>'
+            + '<td>' + this.Op + '</td>'
+            + '<td>' + this.Addr + '</td>'
+            + '<td></td>'
+            + '<td></td>'
+            + '<td>' + this.Progress + '</td>';
     }
 }
 
@@ -375,6 +464,16 @@ class STer {
             }
         }
     }
+
+    to_html_tbody_tds() {
+        return ''
+            + '<td>' + this.Ins_Id + '</td>'
+            + '<td>' + this.Op + '</td>'
+            + '<td>' + this.FP_Value + '</td>'
+            + '<td>' + this.Addr + '</td>'
+            + '<td></td>'
+            + '<td>' + this.Progress + '</td>';
+    }
 }
 
 let ster = new STer();
@@ -422,6 +521,14 @@ class CDB {
             this._writeResult(this._signalQueue[0]);
             this._signalQueue.shift();
         }
+    }
+
+    to_html_tbody() {
+        return ''
+            + '<tr>'
+                + '<td>' + this.RS_Name + '</td>'
+                + '<td>' + this.Value + '</td>'
+            + '</tr>';
     }
 }
 
