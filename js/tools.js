@@ -6,7 +6,7 @@ function hasValue(data) {
     return (data !== undefined) && (data !== null) && (data !== "");
 }
 
-function newList(count, data) {
+function newList(data, count) {
     let x = [];
     for (let i = 0; i < count; i++) {
         // x.push(data);

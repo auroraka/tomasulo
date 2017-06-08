@@ -4,10 +4,9 @@ function refreshFPRegisters(fp_reg_tbody) {
 
     let values = '<tr><td>Value</td>';
     let qis = '<tr><td>Qi</td>';
+    console.log(fp);
     for (let i in fp) {
-        console.log(i);
-
-
+        console.log(fp[i]);
     }
 
     //

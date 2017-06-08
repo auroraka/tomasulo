@@ -80,7 +80,7 @@ class FP {
     }
 }
 
-let fp = FP[FloatPointRegisterTotal];
+let fp = newList(new FP(), FloatPointRegisterTotal);
 for (let i in fp) {
     fp[i].FP_ID = i;
     // ToDo: error here?
@@ -426,3 +426,5 @@ class CDB {
 }
 
 let cdb = new CDB();
+
+
