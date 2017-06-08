@@ -3,10 +3,6 @@
  */
 
 
-function main() {
-
-}
-
 function debug_run() {
     timerStepOne();
     // timerStepContinue();

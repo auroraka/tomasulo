@@ -101,3 +101,5 @@ Functions
 3. Modify FP(index=[0,10]).     GET/SET  = '1.23' / True
    Modify Mem(index=[0,4096)).  GET/SET  = '4.56' / True
 
+
+Memory Watch List

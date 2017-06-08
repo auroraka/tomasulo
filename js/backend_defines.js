@@ -178,38 +178,38 @@ class ReservationStation {
     to_html_tbody() {
         return ''
             + '<tr>'
-                + '<td>' + this.Name + '</td>'
-                + '<td>' + this.Busy + '</td>'
-                + '<td>' + this.Ins_Id + '</td>'
-                + '<td>' + this.Op + '</td>'
-                + '<td>' + this.Qj + '</td>'
-                + '<td>' + this.Qk + '</td>'
-                + '<td>' + this.Vj + '</td>'
-                + '<td>' + this.Vk + '</td>'
+            + '<td>' + this.Name + '</td>'
+            + '<td>' + this.Busy + '</td>'
+            + '<td>' + this.Ins_Id + '</td>'
+            + '<td>' + this.Op + '</td>'
+            + '<td>' + this.Qj + '</td>'
+            + '<td>' + this.Qk + '</td>'
+            + '<td>' + this.Vj + '</td>'
+            + '<td>' + this.Vk + '</td>'
             + '</tr>';
     }
 
     to_html_tbody_lq() {
         return ''
             + '<tr>'
-                + '<td>' + this.Ins_Id + '</td>'
-                + '<td>' + this.Name + '</td>'
-                + '<td>' + this.LDST_Id + '</td>'
-                + '<td>' + this.Busy + '</td>'
-                + '<td>' + this.Addr + '</td>'
+            + '<td>' + this.Ins_Id + '</td>'
+            + '<td>' + this.Name + '</td>'
+            + '<td>' + this.LDST_Id + '</td>'
+            + '<td>' + this.Busy + '</td>'
+            + '<td>' + this.Addr + '</td>'
             + '</tr>';
     }
 
     to_html_tbody_sq() {
         return ''
             + '<tr>'
-                + '<td>' + this.Ins_Id + '</td>'
-                + '<td>' + this.Name + '</td>'
-                + '<td>' + this.LDST_Id + '</td>'
-                + '<td>' + this.Busy + '</td>'
-                + '<td>' + this.Qj + '</td>'
-                + '<td>' + this.Vj + '</td>'
-                + '<td>' + this.Addr + '</td>'
+            + '<td>' + this.Ins_Id + '</td>'
+            + '<td>' + this.Name + '</td>'
+            + '<td>' + this.LDST_Id + '</td>'
+            + '<td>' + this.Busy + '</td>'
+            + '<td>' + this.Qj + '</td>'
+            + '<td>' + this.Vj + '</td>'
+            + '<td>' + this.Addr + '</td>'
             + '</tr>';
     }
 }
@@ -300,6 +300,7 @@ function _getInstructionById(id) {
 }
 
 function _progressAdd(progress) {
+    console.log("add progress");
     ab = progress.split("/");
     let a = parseInt(ab[0]);
     let b = parseInt(ab[1]);
@@ -535,8 +536,8 @@ class CDB {
     to_html_tbody() {
         return ''
             + '<tr>'
-                + '<td>' + this.RS_Name + '</td>'
-                + '<td>' + this.Value + '</td>'
+            + '<td>' + this.RS_Name + '</td>'
+            + '<td>' + this.Value + '</td>'
             + '</tr>';
     }
 }
@@ -544,3 +545,12 @@ class CDB {
 let cdb = new CDB();
 
 
+let memory_watch_list = [];
+
+function addOneAddrToMemWatchList(id) {
+    memory_watch_list.push(id);
+}
+
+function clearMemWatchList() {
+    memory_watch_list = [];
+}

@@ -7,11 +7,11 @@ function refreshFPRegisters(fp_reg_tbody) {
     }
     values += '</tr>';
     qis += '</tr>';
-    fp_reg_tbody.text(values + qis);
+    fp_reg_tbody.html(values + qis);
 }
 
 function refreshCDB(cdb_tbody) {
-    cdb_tbody.text(cdb.to_html_tbody());
+    cdb_tbody.html(cdb.to_html_tbody());
 }
 
 function refreshReservationStations(rs_tbody) {
@@ -22,7 +22,7 @@ function refreshReservationStations(rs_tbody) {
     for (let i in multRS) {
         rs += multRS[i].to_html_tbody();
     }
-    rs_tbody.text(rs);
+    rs_tbody.html(rs);
 }
 
 function refreshCalculator(cal_tbody) {
@@ -33,7 +33,7 @@ function refreshCalculator(cal_tbody) {
     cal += '<tr><td>Mul / Div</td>' + multiplier.to_html_tbody_tds() + '</tr>';
     cal += '<tr><td>Load</td>' + lder.to_html_tbody_tds() + '</tr>';
     cal += '<tr><td>Store</td>' + ster.to_html_tbody_tds() + '</tr>';
-    cal_tbody.text(cal);
+    cal_tbody.html(cal);
 }
 
 function refreshLoadQueue(lq_tbody) {
@@ -41,7 +41,7 @@ function refreshLoadQueue(lq_tbody) {
     for (let i in LQ) {
         load += LQ[i].to_html_tbody_lq();
     }
-    lq_tbody.text(load);
+    lq_tbody.html(load);
 }
 
 function refreshStoreQueue(sq_tbody) {
@@ -49,7 +49,7 @@ function refreshStoreQueue(sq_tbody) {
     for (let i in SQ) {
         store += SQ[i].to_html_tbody_sq();
     }
-    sq_tbody.text(store);
+    sq_tbody.html(store);
 }
 
 function refreshInstructions(ins_tbody) {
@@ -57,7 +57,7 @@ function refreshInstructions(ins_tbody) {
     for (let i in instructions) {
         ins += instructions[i].to_html_tbody();
     }
-    ins_tbody.text(ins);
+    ins_tbody.html(ins);
 }
 
 function refreshMemories(mem_tbody) {
