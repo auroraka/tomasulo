@@ -38,7 +38,7 @@ function cloneObject(obj) {
 }
 
 function o(text) {
-    if (text === null) {
+    if ((text === null) || (text === undefined)) {
         return "";
     } else {
         return text.toString();

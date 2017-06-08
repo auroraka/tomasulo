@@ -169,7 +169,7 @@ function _opSameAsType(op, type) {
         case "LD":
             return type === "Load";
         case "ST":
-            return type === "Load";
+            return type === "Store";
         default:
             return false;
     }
@@ -179,7 +179,7 @@ function _fpReady(t) {
     return !hasValue(fp[_getFPId(t)].Qi);
 }
 function _sendInstructionToRS(inst, rss) {
-    Info("[send inst]", inst.toString());
+    Message("[send inst]", inst.toString() + " -> " + rss.Name);
     console.log(inst);
     if (_op2Type(inst.Op) === "Add" || _op2Type(inst.Op) === "Mult") {
         rss.Ins_Id = inst.Ins_Id;
@@ -197,7 +197,7 @@ function _sendInstructionToRS(inst, rss) {
             rss.Qk = null;
         } else {
             rss.Vk = null;
-            rss.Qk = getFP(inst.SrcK).Qk;
+            rss.Qk = getFP(inst.SrcK).Qi;
         }
         getFP(inst.Dst).Qi = rss.Name;
     } else if (_op2Type(inst.Op) === "Load") {
@@ -225,6 +225,10 @@ function _extraSendInstCheck(inst, rss) {
     if (_op2Type(inst.Out) === "Add") {
         return rss._id === 0;
     }
+    if (_op2Type(inst.Op) !== "Store" && (getFP(inst.Dst)).Qi !== null) {
+        return false;
+    }
+    return true;
 }
 function timerStepOne() {
     if (_checkGlobalComplete()) {

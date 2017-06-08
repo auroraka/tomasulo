@@ -68,6 +68,7 @@ class Instruction {
 let instructions = [];
 
 function delInstruction(Inst_Id) {
+    return;
     console.log("del inst " + Inst_Id.toString());
     for (let i in instructions) {
         if (instructions[i].Ins_Id === Inst_Id) {
@@ -113,7 +114,9 @@ class FP {
 
     _receiveResult(name, val) {
         if (this.Qi === name) {
+            Message("fp change", this.Value.toString() + " " + val.toString());
             this.Value = val;
+            this.Qi = null;
         }
     }
 
@@ -129,6 +132,7 @@ class FP {
 let fp = newList(new FP(), FloatPointRegisterTotal);
 for (let i in fp) {
     fp[i].FP_ID = i;
+    fp[i].Qi = null;
 }
 
 let memory = Array(MemTotal).fill(0);
@@ -184,7 +188,7 @@ class ReservationStation {
     }
 
     ready() {
-        return (this.Qk === null) && (this.Qj === null);
+        return (this.Ins_Id != null) && (this.Qk === null) && (this.Qj === null);
     }
 
     canLDST() {
@@ -291,6 +295,9 @@ class Adder {
                 this.Vj = adder[0].Vj;
                 this.Vk = adder[0].Vk;
                 this.Progress = "2/2";
+
+                adder[0]._clean();
+
                 let result = null;
                 if (this.Op === "ADDD") {
                     result = this.Vj + this.Vk;
@@ -298,16 +305,15 @@ class Adder {
                     result = this.Vj - this.Vk;
 
                 }
-
                 cdb._receiveValue(this.Dst, result);
                 wbInstruction(this.Ins_Id);
             }
         } else {
             for (let i in rs) {
-                if ((rs[i].Type === "Add") && (rs[i].ready())) {
+                if ((rs[i].Type === "Add") && (rs[i].ready()) && (rs[i].Ins_Id !== null) && (adder[1].Ins_Id != rs[i].Ins_Id)) {
                     this.Ins_Id = rs[i].Ins_Id;
                     this.Op = rs[i].Op;
-                    this.Dst = rs[i].name;
+                    this.Dst = rs[i].Name;
                     this.Vj = rs[i].Vj;
                     this.Vk = rs[i].Vk;
                     this.Progress = "1/2";
@@ -384,7 +390,7 @@ class Multiplier {
             return;
         }
         if (hasValue(this.Ins_Id)) {
-            this.Progress = _addProgress(this.Progress);
+            this.Progress = _progressAdd(this.Progress);
             if (_progressFinish(this.Progress)) {
                 cdb._receiveValue(this.Dst, this._result);
                 this._stall = true;
@@ -392,10 +398,10 @@ class Multiplier {
             }
         } else {
             for (let i in rs) {
-                if ((rs[i].Type === "Mult") && (rs[i].ready())) {
+                if ((rs[i].Type === "Mult") && (rs[i].ready()) && (rs[i].Ins_Id !== null)) {
                     this.Ins_Id = rs[i].Ins_Id;
                     this.Op = rs[i].Op;
-                    this.Dst = rs[i].name;
+                    this.Dst = rs[i].Name;
                     this.Vj = rs[i].Vj;
                     this.Vk = rs[i].Vk;
                     if (rs[i].Op === "MULD") {
@@ -403,12 +409,13 @@ class Multiplier {
                         this._result = this.Vj * this.Vk;
                     } else if (rs[i].Op === "DIVD") {
                         this.Progress = "1/" + DivCalcTime.toString();
-                        if (this.Vk) {
+                        if (this.Vk === 0) {
                             alert("div by zero!!!");
                         }
                         this._result = this.Vj / this.Vk;
                         exeInstruction(this.Ins_Id);
                     }
+                    exeInstruction(this.Ins_Id);
                 }
             }
         }
@@ -530,7 +537,7 @@ class STer {
                     this.Ins_Id = rs[i].Ins_Id;
                     this.Op = "ST";
                     this.Addr = rs[i].Addr;
-                    this.FP_Value = getFP(rs[i].SrcJ);
+                    this.FP_Value = rs[i].Vj;
                     this.Progress = "1/" + StoreCalcTime.toString();
                     exeInstruction(this.Ins_Id);
                 }
@@ -552,7 +559,7 @@ class STer {
 let ster = new STer();
 
 
-let calc = [].concat(multiplier, lder, ster, adder);
+let calc = [].concat(multiplier, lder, ster, adder[1], adder[0]);
 
 class CDB {
     constructor() {
@@ -569,14 +576,14 @@ class CDB {
     }
 
     _writeResult(obj) {
-        Info("write result " + obj.name + " " + obj.val.toString());
+        Info("CDB write result " + obj.name + " " + obj.val.toString());
         for (let i in fp) {
-            if (hasValue(fp.Qi) && (fp[i].Qi === obj.name)) {
+            if (hasValue(fp[i].Qi) && (fp[i].Qi === obj.name)) {
                 fp[i]._receiveResult(obj.name, obj.val);
             }
         }
         for (let i in rs) {
-            if (hasValue(rs[i].Qj) && (rs[i].Qj === obj.name)) {
+            if ((hasValue(rs[i].Qj) && (rs[i].Qj === obj.name)) || (hasValue(rs[i].Qk) && (rs[i].Qk === obj.name))) {
                 rs[i]._receiveResult(obj.name, obj.val);
             }
         }
@@ -612,6 +619,11 @@ let cdb = new CDB();
 let memory_watch_list = [];
 
 function addOneAddrToMemWatchList(id) {
+    for (let i in memory_watch_list) {
+        if (memory_watch_list[i] === id) {
+            return;
+        }
+    }
     memory_watch_list.push(id);
 }
 

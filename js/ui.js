@@ -65,9 +65,9 @@ function refreshStoreQueue(sq_tbody) {
 function refreshInstructions(ins_tbody) {
     let ins = '';
     for (let i in instructions) {
-        console.log('refresh one ins');
-        console.log(instructions[i]);
-        console.log(instructions[i].to_html_tbody());
+        // console.log('refresh one ins');
+        // console.log(instructions[i]);
+        // console.log(instructions[i].to_html_tbody());
 
 
         ins += instructions[i].to_html_tbody();

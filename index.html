@@ -208,7 +208,8 @@
     <div class="header">Load Instructions</div>
     <div class="content container">
         <form class="ui form">
-            <textarea placeholder="Pleas type your instructions (splited by '\n')..." id="instructions-textarea"></textarea>
+            <textarea placeholder="Pleas type your instructions (splited by '\n')..."
+                      id="instructions-textarea"></textarea>
             <div class="ui divider"></div>
             <div class="ui teal button" id="apply-instruction-button">Apply</div>
         </form>
@@ -403,12 +404,11 @@
             const addr = parseInt(memoryAddr.val());
             const value = parseFloat(memoryValue.val());
 
-            // ToDo: check addr is number...?
-
-            if ((0 <= addr) && (addr < MemTotal)) {
+            if ((!isNaN(addr)) && (0 <= addr) && (addr < MemTotal)) {
                 setMem(addr, value);
                 memoryAddr.val('');
                 memoryValue.val('');
+                refreshUI();
                 alert('Memory Value Saved!');
             } else {
                 alert('Invalid Params!');
@@ -421,11 +421,7 @@
         memoryWatchApply.click(function () {
             const addr = parseInt(memoryWatchAddr.val());
 
-            // ToDo: check addr is number...?
-
-            // ToDo: below if add condition: && addr not in watch list.
-
-            if ((0 <= addr) && (addr < MemTotal)) {
+            if ((!isNaN(addr)) && (0 <= addr) && (addr < MemTotal)) {
                 addOneAddrToMemWatchList(addr);
                 memoryWatchAddr.val('');
                 refreshUI();
